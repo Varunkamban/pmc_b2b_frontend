@@ -1,0 +1,338 @@
+.scroll-inner {
+  max-height: calc(100vh - 190px);
+  overflow-y: auto;
+  // background: var(--color-light-light-gray);
+  border-radius: 6px;
+  padding: 0px;
+  margin: 20px 0 0 0;
+  border: 2px solid #4bd058;
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background-color: var(--color-light-light-gray);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px var(--color-light-light-gray);
+    border-radius: 10px;
+    background-color: var(--color-light-light-gray);
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 5px var(--color-oldSilver);
+    background-color: var(--color-oldSilver);
+  }
+  .table-box {
+    // border: 1px solid #f5f296;
+    border-radius: 6px;
+    .isSeats-selectall {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 8px;
+      margin: 2px 0 8px;
+      .flex-name-checkbox {
+        display: inline-flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        .selectAllHead {
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 100%;
+          vertical-align: middle;
+          color: var(--color-blue);
+        }
+        .checkbox-img {
+          width: 13px;
+          height: 100%;
+        }
+      }
+    }
+    &.booked {
+      border-color: #dc3545;
+    }
+    &.available {
+      border-color: #28a745;
+    }
+    .table-heading {
+      color: #605509;
+      background: transparent;
+      width: fit-content;
+      margin: 0px auto;
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+    }
+    .save-seats {
+      background: var(--color-light-gray-12);
+      &:hover {
+        background: var(--color-blue);
+        color: var(--color-white);
+      }
+    }
+    .addseats {
+      height: 27px;
+    }
+    .removeseats {
+      height: 27px;
+    }
+    .tables-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      // @media (min-width: 768px) and (max-width: 1200px) {
+      //   display: flex;
+      //   flex-direction: row;
+      // }
+      .top-row,
+      .bottom-row {
+        width: fit-content;
+        justify-content: flex-start;
+        .top-row-chair,
+        .bottom-row-chair {
+          padding: 0 10px;
+
+          .chairs {
+            height: 25px;
+            width: 40px;
+            padding: 8px 0px;
+            display: inline-flex;
+            flex-direction: row;
+            align-items: center;
+            border: none;
+            background: none;
+            position: relative;
+            height: 38px;
+            &.chairNotBooked {
+              color: var(--color-white);
+              font-size: 13px;
+              font-weight: 500;
+              line-height: 100%;
+              // background-color: var(--color-dark-green);
+            }
+            &.chairBooked {
+              color: var(--color-white);
+              font-size: 13px;
+              font-weight: 500;
+              line-height: 100%;
+              // background-color: var(--color-red);
+            }
+            &.chairNew {
+              border: 1px solid var(--color-red);
+            }
+            &:disabled {
+              opacity: 0.5;
+            }
+            .char-number {
+              position: absolute;
+              color: var(--color-white);
+              font-size: 12px;
+              font-weight: 600;
+              line-height: 100%;
+              left: 0;
+              right: 0;
+              top: 21px;
+            }
+            .charsimage {
+              width: 36px;
+            }
+          }
+        }
+        .bottom-row-chair {
+          .charsimage {
+            transform: rotate(180deg);
+          }
+          .char-number {
+            top: 6px !important;
+          }
+        }
+      }
+      .tables {
+        padding: 15px 20px;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        //   align-items: center
+        width: 100%;
+        min-height: 50px;
+        min-width: 80px;
+        background-color: #a7931f;
+        &.chairNotBooked {
+          color: var(--color-white);
+          font-size: 13px;
+          font-weight: 500;
+          line-height: 100%;
+          background-color: #a7931f;
+          background-image: url("../../assets/images/sidenav/table-image.svg"); /* Set your image URL */
+          background-size: cover; /* Make the image cover the entire container */
+          background-repeat: no-repeat; /* Prevent image repetition */
+          background-position: center center;
+        }
+        &.chairBooked {
+          color: var(--color-white);
+          font-size: 13px;
+          font-weight: 500;
+          line-height: 100%;
+          background-color: var(--color-red);
+        }
+        h6 {
+          font-size: 15px;
+          font-weight: 500;
+          line-height: 100%;
+        }
+      }
+    }
+  }
+}
+
+/* Default (desktop): rows side by side */
+.table-wrapper .chair-row {
+  flex-direction: row;
+}
+
+/* Below 800px: force vertical stacking */
+@media (max-width: 800px) {
+  .table-wrapper .chair-row {
+    flex-direction: column !important;
+    align-items: center;
+  }
+}
+
+.products__body-table.dashboard_table {
+  min-width: 600px;
+  margin: 10px 0 0 0;
+  table {
+    width: 100%;
+    thead {
+      background: var(--color-light-light-gray);
+      text-align: center;
+    }
+    tbody {
+      background: var(--color-white);
+      td {
+        &.id,
+        &.seatCount,
+        &.tables_per_floor,
+        &.tableCount,
+        &.floor {
+          text-align: center;
+        }
+        &.hotel_name {
+          max-width: 320px;
+          .truncate-2-lines {
+            font-weight: bold;
+            color: var(--color-light-black-2);
+            max-width: 260px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+          }
+        }
+        .showToolTip {
+          .update-status {
+            border: 1px solid var(--color-light-light-gray);
+            border-radius: 4px;
+          }
+          .popup-content {
+            width: 110px;
+            right: 40px;
+            top: -55px;
+          }
+        }
+      }
+    }
+
+    .edit-icon {
+      cursor: pointer;
+      padding: 8px;
+      border: 1px solid var(--color-light-light-gray);
+      border-radius: 6px;
+      height: 35px;
+      width: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}
+.table-details-card {
+  /* From Uiverse.io by Mike11jr */
+  .scene {
+    background: #7db331;
+    border: none;
+    padding: 10px 20px;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    width: 120px;
+    // text-transform: uppercase;
+    cursor: pointer;
+    transform: skew(-21deg);
+    color: #3b0d0d;
+    span {
+      display: inline-block;
+      transform: skew(21deg);
+    }
+    &.active {
+      background: rgb(147 87 25);
+      color: #7fff00;
+    }
+  }
+  .scene::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 100%;
+    left: 0;
+    background: rgb(150 213 9);
+    opacity: 0;
+    z-index: -1;
+    transition: all 0.5s;
+  }
+  .scene:hover {
+    color: #fff;
+  }
+  .scene:hover::before {
+    left: 0;
+    right: 0;
+    opacity: 1;
+  }
+  .floor-name {
+    background: #1f56ad;
+    font-size: 18px;
+    line-height: 32px;
+    font-weight: 500;
+    width: fit-content;
+    border: none;
+    border-radius: 21px;
+    padding: 5px 16px;
+    color: #fff;
+  }
+  .addNewTable {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    background: var(--color-white);
+    color: #1b4332;
+    border: 1px solid #1b4332;
+    border-radius: 4px;
+    padding: 10px;
+    &:hover {
+      color: var(--color-white);
+      background: #1b4332;
+    }
+  }
+}

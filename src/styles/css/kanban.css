@@ -1,0 +1,867 @@
+.sec-kanban-main{
+  width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding-bottom:20px;
+}
+
+.sec-kanban-board{
+  display:flex;
+  gap:20px;
+  min-width:max-content;
+}
+
+.kanban-main{
+  width:320px;
+  min-width:320px;
+  background:#F1F5F9;
+  border-radius:20px;
+  padding:14px;
+  border:1px solid #E2E8F0;
+}
+
+/* Column Header */
+
+.kanban-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.kanban-title{
+  font-size:14px;
+  font-weight:700;
+  color:#334155;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.ticket-count{
+  background:#E2E8F0;
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#3B82F6;
+}
+
+/* Column Body */
+
+.kanban-body{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  max-height:calc(100vh - 220px);
+  overflow-y:auto;
+}
+
+.kanban-body::-webkit-scrollbar{
+  display:none;
+}
+
+.ticket-card{
+  background:#fff;
+  border-radius:16px;
+  padding:16px;
+  border:1px solid #E2E8F0;
+  box-shadow:0 2px 6px rgba(0,0,0,0.05);
+  transition:0.2s;
+}
+
+.ticket-card:hover{
+  transform:translateY(-2px);
+}
+
+/* Top section */
+
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.ticket-id{
+  font-size:12px;
+  color:#94A3B8;
+  font-weight:600;
+}
+
+/* Priority badge */
+
+.priority-badge{
+  font-size:11px;
+  padding:4px 10px;
+  border-radius:20px;
+  font-weight:700;
+}
+
+.priority-badge.vip{
+  background:#EF4444;
+  color:#fff;
+}
+
+.priority-badge.normal{
+  background:#E2E8F0;
+  color:#2563EB;
+}
+
+/* Customer */
+
+.customer-name{
+  font-size:18px;
+  font-weight:700;
+  margin-bottom:4px;
+}
+
+.vehicle-info{
+  font-size:13px;
+  color:#64748B;
+}
+
+.separator{
+  margin:0 6px;
+}
+
+/* Location box */
+
+.ticket-details-box{
+  margin-top:12px;
+  background:#F1F5F9;
+  border-radius:12px;
+  padding:10px;
+}
+
+.detail-row{
+  font-size:13px;
+  color:#334155;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:6px;
+}
+.waiting-badge{
+  background:#FEF3C7;
+  color:#D97706;
+  font-size:11px;
+  font-weight:700;
+  padding:6px 10px;
+  border-radius:8px;
+  display:inline-block;
+}
+.driver-assignment-ui{
+  margin-top:12px;
+}
+
+.drivers-row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.driver-info{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.driver-avatar{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:#E2E8F0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.driver-name{
+  font-size:13px;
+  font-weight:600;
+}
+
+.driver-role{
+  font-size:11px;
+  color:#94A3B8;
+}
+
+.travel-meta{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+  font-size:12px;
+  color:#F97316;
+}
+.transit-container{
+  margin-top:12px;
+}
+
+.transit-badge{
+  background:#E0F2FE;
+  padding:8px 12px;
+  border-radius:12px;
+  font-size:13px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:#0369A1;
+}
+
+.transit-footer{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+  font-size:12px;
+}
+
+.est-time-tag{
+  color:#F97316;
+  font-weight:600;
+}
+.completed-box{
+  margin-top:12px;
+}
+
+.completed-footer{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+}
+
+.success-tag{
+  background:#DCFCE7;
+  color:#16A34A;
+  font-size:11px;
+  padding:4px 8px;
+  border-radius:8px;
+  font-weight:700;
+}
+.add-ticket-btn-dashed{
+  border:2px dashed #2563EB;
+  background:transparent;
+  padding:14px;
+  border-radius:14px;
+  font-size:13px;
+  font-weight:600;
+  color:#2563EB;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.add-ticket-btn-dashed:hover{
+  background:#EFF6FF;
+}
+.status-filter{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:20px;
+}
+
+.filter-label{
+  font-size:12px;
+  font-weight:600;
+  color:#64748B;
+}
+
+.filter-list{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.filter-chip{
+  padding:6px 14px;
+  border-radius:20px;
+  border:none;
+  background:#F1F5F9;
+  font-size:13px;
+  cursor:pointer;
+}
+
+.filter-chip.active{
+  background:#2563EB;
+  color:white;
+}
+
+/* ============================================
+   KANBAN FILTER BAR
+   ============================================ */
+
+.kb-filter-bar {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #E2E8F0;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.kb-filter-group {
+  margin-bottom: 12px;
+}
+
+.kb-filter-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.kb-filter-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.kb-filter-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.kb-filter-dropdown {
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+}
+
+.kb-filter-select {
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #E2E8F0;
+  background: #F8FAFC;
+  font-size: 13px;
+  color: #334155;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.kb-filter-select:focus {
+  outline: none;
+  border-color: #2563EB;
+}
+
+.kb-filter-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  padding-bottom: 2px;
+}
+
+.kb-filter-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748B;
+}
+
+.kb-filter-clear {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #E2E8F0;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  color: #EF4444;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.kb-filter-clear:hover {
+  background: #FEF2F2;
+  border-color: #FCA5A5;
+}
+
+/* ============================================
+   DRIVER STATUS SUB-FLOW STYLES
+   ============================================ */
+
+/* Generic driver status section */
+.ds-section {
+  margin-top: 12px;
+}
+
+/* Status Badge */
+.ds-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ds-status-badge i {
+  font-size: 11px;
+}
+
+/* Progress Bar */
+.ds-progress-bar {
+  display: flex;
+  gap: 3px;
+  margin: 8px 0 6px;
+}
+
+.ds-progress-seg {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: #E2E8F0;
+  transition: background 0.3s;
+}
+
+.ds-progress-seg.filled {
+  opacity: 1;
+}
+
+.ds-progress-seg.current {
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.05);
+}
+
+/* Description */
+.ds-description {
+  font-size: 11px;
+  color: #64748B;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+/* Driver Card */
+.ds-driver-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #F8FAFC;
+  border-radius: 10px;
+  border: 1px solid #F1F5F9;
+  margin-bottom: 6px;
+}
+
+.ds-driver-card.main {
+  background: #FEFCE8;
+  border-color: #FEF08A;
+}
+
+.ds-driver-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.ds-driver-avatar.support {
+  background: linear-gradient(135deg, #2563EB, #7C3AED);
+}
+
+.ds-driver-avatar.main {
+  background: linear-gradient(135deg, #D97706, #EA580C);
+}
+
+.ds-driver-detail {
+  flex: 1;
+  min-width: 0;
+}
+
+.ds-driver-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1E293B;
+  margin: 0;
+}
+
+.ds-driver-role {
+  font-size: 10px;
+  color: #94A3B8;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ds-driver-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.ds-action-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid #E2E8F0;
+  background: #fff;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ds-action-btn:hover {
+  background: #EFF6FF;
+  color: #2563EB;
+  border-color: #BFDBFE;
+}
+
+/* Travel Bar */
+.ds-travel-bar {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  padding: 7px 10px;
+  background: #FFF7ED;
+  border-radius: 8px;
+  border: 1px solid #FED7AA;
+}
+
+.ds-travel-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #EA580C;
+}
+
+/* Arrival Box */
+.ds-arrival-box {
+  background: #F1F5F9;
+  border-radius: 10px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+
+.ds-arrival-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.ds-arrival-time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #334155;
+  font-weight: 600;
+}
+
+.on-time-tag {
+  background: #DCFCE7;
+  color: #16A34A;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+/* Inspection Card */
+.ds-inspection-card {
+  background: #FEFCE8;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #FEF08A;
+  margin-bottom: 8px;
+}
+
+.ds-inspection-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #92400E;
+  margin-bottom: 8px;
+}
+
+.ds-inspection-header i {
+  font-size: 12px;
+}
+
+.ds-inspection-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ds-check-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  font-size: 11px;
+  color: #94A3B8;
+  transition: all 0.2s;
+}
+
+.ds-check-item.done {
+  color: #16A34A;
+}
+
+.ds-check-item.active {
+  background: #FEF3C7;
+  color: #D97706;
+  font-weight: 600;
+}
+
+.ds-check-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  background: #F1F5F9;
+  color: #94A3B8;
+  flex-shrink: 0;
+}
+
+.ds-check-icon.done {
+  background: #DCFCE7;
+  color: #16A34A;
+  font-weight: 700;
+}
+
+.ds-check-label {
+  flex: 1;
+}
+
+.ds-check-extra {
+  font-size: 10px;
+  color: #94A3B8;
+  font-weight: 600;
+}
+
+/* Compact Drivers Row */
+.ds-drivers-row-compact {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ds-mini-driver {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #475569;
+  font-weight: 500;
+}
+
+.ds-mini-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ds-mini-avatar.support {
+  background: linear-gradient(135deg, #2563EB, #7C3AED);
+}
+
+.ds-mini-avatar.main {
+  background: linear-gradient(135deg, #D97706, #EA580C);
+}
+
+/* Transit Info */
+.ds-transit-info {
+  margin-bottom: 8px;
+}
+
+.ds-transit-route {
+  position: relative;
+  padding-left: 14px;
+}
+
+.ds-transit-point {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #334155;
+  font-weight: 500;
+  padding: 4px 0;
+}
+
+.ds-transit-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ds-transit-dot.start {
+  background: #2563EB;
+}
+
+.ds-transit-dot.end {
+  background: #16A34A;
+}
+
+.ds-transit-line {
+  width: 2px;
+  height: 14px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #94A3B8 0px,
+    #94A3B8 3px,
+    transparent 3px,
+    transparent 6px
+  );
+  margin-left: 3px;
+}
+
+.ds-transit-stats {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: 8px;
+  background: #F8FAFC;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  padding: 8px 0;
+}
+
+.ds-transit-stat {
+  flex: 1;
+  text-align: center;
+}
+
+.ds-stat-value {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+  color: #1E293B;
+  line-height: 1;
+}
+
+.ds-stat-value.highlight {
+  color: #16A34A;
+}
+
+.ds-stat-label {
+  display: block;
+  font-size: 9px;
+  color: #94A3B8;
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+.ds-transit-stat-divider {
+  width: 1px;
+  height: 24px;
+  background: #E2E8F0;
+}
+
+/* Garage Checklist */
+.ds-garage-checklist {
+  background: #F0FDF4;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #BBF7D0;
+  margin-bottom: 8px;
+}
+
+.ds-garage-checklist .ds-inspection-header {
+  color: #166534;
+}
+
+/* Garage Label (for Completed) */
+.ds-garage-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #64748B;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.ds-garage-label i {
+  color: #94A3B8;
+}
+
+/* Estimated Time */
+.ds-est-time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #F97316;
+  margin-bottom: 6px;
+}
+
+/* Time text in completed */
+.time-text {
+  font-size: 11px;
+  color: #64748B;
+}
+
+/* (card action buttons removed — movement is driven by driver app status) */
+
+/* Priority Toggle in Create Modal */
+.kb-priority-toggle {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.kb-priority-btn {
+  flex: 1;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #E2E8F0;
+  background: #F8FAFC;
+  color: #64748B;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.kb-priority-btn:hover {
+  border-color: #CBD5E1;
+}
+
+.kb-priority-btn.active.normal {
+  background: #EFF6FF;
+  border-color: #2563EB;
+  color: #2563EB;
+}
+
+.kb-priority-btn.active.vip {
+  background: #FEF2F2;
+  border-color: #EF4444;
+  color: #EF4444;
+}

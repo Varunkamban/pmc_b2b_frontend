@@ -1,0 +1,29 @@
+@use "./fonts/Montserrat.scss";
+@use "bootstrap/scss/bootstrap";
+@use "./variables-style.css";
+@use "./components";
+@use "./pages";
+@use "./css/style.css";
+@use "./css/kanban.css";
+@use "./css/layout.css";
+@use "./css/dashboard.css";
+@use "./css/tickets.css";
+
+
+body {
+  margin: 0;
+  font-family: var(--default-font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  
+}
+
+.input-error {
+  border: 1px solid red !important;
+}
+
+.mandatory {
+  margin-left: 3px;
+  color: var(--color-light-red);
+}

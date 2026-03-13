@@ -1,0 +1,2459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PikMyCar — Driver App · Complete UI Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --Y: #F5C518;        /* yellow */
+  --YD: #D9AD00;       /* yellow dark */
+  --G: #1A7A4A;        /* green */
+  --GL: #E4F5EC;       /* green light */
+  --D: #111111;        /* dark */
+  --D2: #1E1E1E;       /* dark 2 */
+  --D3: #2A2A2A;       /* dark 3 */
+  --GR: #636363;       /* gray */
+  --GR2: #A0A0A0;      /* gray light */
+  --BG: #F3EFE8;       /* page bg */
+  --W: #FFFFFF;
+  --BD: #E4E4E4;       /* border */
+  --F: #F7F7F5;        /* field bg */
+  --R: #E53935;        /* red */
+  --O: #F57C00;        /* orange */
+  --B: #1565C0;        /* blue */
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--BG);
+  padding: 50px 24px 100px;
+  min-height: 100vh;
+}
+
+/* ─── PAGE HEADER ─── */
+.pg-head {
+  text-align: center;
+  margin-bottom: 60px;
+}
+.pg-head .app-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--D); color: var(--Y); border-radius: 30px;
+  padding: 8px 18px; font-size: 12px; font-weight: 700;
+  letter-spacing: 1px; margin-bottom: 20px;
+}
+.pg-head h1 {
+  font-family: 'Syne', sans-serif; font-size: 42px; font-weight: 800;
+  color: var(--D); letter-spacing: -2px; line-height: 1;
+  margin-bottom: 12px;
+}
+.pg-head h1 span { color: var(--G); }
+.pg-head p { font-size: 16px; color: var(--GR); max-width: 600px; margin: 0 auto; }
+
+/* ─── SECTION HEADER ─── */
+.sec {
+  max-width: 1500px; margin: 70px auto 28px;
+  display: flex; align-items: center; gap: 16px;
+}
+.sec-num {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--D); color: var(--Y);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800;
+  flex-shrink: 0;
+}
+.sec-text h2 {
+  font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700;
+  color: var(--D); line-height: 1.1;
+}
+.sec-text p { font-size: 12px; color: var(--GR); margin-top: 2px; }
+.sec-line { flex: 1; height: 1.5px; background: linear-gradient(to right, #D0CBC2, transparent); }
+
+/* ─── PHONES GRID ─── */
+.grid {
+  display: flex; flex-wrap: wrap; gap: 20px;
+  justify-content: flex-start; max-width: 1500px; margin: 0 auto;
+}
+.grid.center { justify-content: center; }
+
+/* ─── PHONE FRAME ─── */
+.pw { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.pl {
+  font-size: 10px; font-weight: 700; color: var(--GR);
+  text-transform: uppercase; letter-spacing: 2px; text-align: center;
+  max-width: 230px; line-height: 1.4;
+}
+.ph {
+  width: 230px; height: 496px;
+  background: var(--W); border-radius: 38px;
+  border: 9px solid var(--D);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden; position: relative;
+  display: flex; flex-direction: column;
+  flex-shrink: 0;
+}
+.ph.tall { height: 560px; }
+.ph.dk { background: var(--D2); }
+.ph.gr { background: #F0FAF5; }
+.ph.yw { background: #FFFBEA; }
+
+/* ─── STATUS BAR ─── */
+.sb {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 18px 5px; font-size: 10px; font-weight: 700;
+  flex-shrink: 0; letter-spacing: 0.2px;
+}
+.sb.light { color: var(--D); }
+.sb.dark { color: var(--W); }
+.sb-icons { display: flex; align-items: center; gap: 3px; }
+
+/* ─── SCROLLABLE SCREEN ─── */
+.sc { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+.sc-scroll { flex: 1; overflow-y: auto; }
+.sc-scroll::-webkit-scrollbar { display: none; }
+
+/* ─── BOTTOM NAV ─── */
+.bnav {
+  display: flex; background: var(--W); border-top: 1px solid var(--BD);
+  padding: 7px 0 3px; flex-shrink: 0;
+}
+.bnav.dk { background: var(--D2); border-top: 1px solid #333; }
+.ni {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 2px; cursor: pointer;
+}
+.ni .ico { font-size: 17px; line-height: 1; }
+.ni .lbl { font-size: 9px; color: var(--GR); font-weight: 500; }
+.ni.act .lbl { color: var(--YD); }
+.ni .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--Y); margin: 0 auto; }
+
+/* ─── TOP BARS ─── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 16px 10px; flex-shrink: 0;
+}
+.topbar.green { background: var(--G); }
+.topbar.dark { background: var(--D); }
+.topbar.yellow { background: var(--Y); }
+.topbar.white { background: var(--W); border-bottom: 1px solid var(--BD); }
+.topbar.transparent { background: transparent; }
+
+.tb-title {
+  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+}
+.back-btn { font-size: 18px; cursor: pointer; line-height: 1; width: 28px; }
+.notif-btn {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); display: flex;
+  align-items: center; justify-content: center; font-size: 14px;
+  position: relative; cursor: pointer;
+}
+.notif-btn .bdot {
+  position: absolute; top: 4px; right: 4px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--R); border: 1.5px solid var(--D);
+}
+
+/* ─── ATOMS ─── */
+.btn {
+  display: block; width: calc(100% - 28px);
+  margin: 0 14px; padding: 13px;
+  border: none; border-radius: 12px; cursor: pointer;
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+  text-align: center; line-height: 1;
+}
+.btn.yellow { background: var(--Y); color: var(--D); }
+.btn.green  { background: var(--G); color: var(--W); }
+.btn.dark   { background: var(--D); color: var(--W); }
+.btn.ghost  { background: var(--F); color: var(--D); border: 1.5px solid var(--BD); }
+.btn.red    { background: var(--R); color: var(--W); }
+.btn.outline { background: transparent; border: 1.5px solid var(--BD); color: var(--D); }
+.btn.sm { padding: 9px 14px; font-size: 11px; border-radius: 9px; margin: 0; width: auto; }
+
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  border-radius: 20px; padding: 4px 10px;
+  font-size: 10px; font-weight: 700; line-height: 1;
+}
+.tag.yellow { background: var(--Y); color: var(--D); }
+.tag.green  { background: var(--G); color: var(--W); }
+.tag.green-lt { background: var(--GL); color: var(--G); }
+.tag.dark   { background: var(--D); color: var(--Y); }
+.tag.red    { background: #FEEBEB; color: var(--R); }
+.tag.orange { background: #FFF3E0; color: var(--O); }
+.tag.blue   { background: #E3F2FD; color: var(--B); }
+.tag.gray   { background: var(--F); color: var(--GR); }
+
+.divider { height: 1px; background: var(--BD); margin: 0 14px; }
+.gap4 { height: 4px; }
+.gap8 { height: 8px; }
+.gap12 { height: 12px; }
+.gap14 { height: 14px; }
+
+/* ─── FORM ELEMENTS ─── */
+.form-blk { padding: 0 14px 10px; }
+.form-lbl { font-size: 10px; font-weight: 700; color: var(--GR); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; display: block; }
+.input {
+  width: 100%; background: var(--F); border: 1.5px solid var(--BD);
+  border-radius: 10px; padding: 10px 12px;
+  font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--GR);
+  display: flex; align-items: center; gap: 6px;
+}
+.input.focus { border-color: var(--G); background: #F0FAF5; color: var(--D); }
+.input .ph-flag { font-size: 16px; }
+.input .ph-code { color: var(--D); font-weight: 600; margin-right: 4px; }
+
+.tab-row {
+  display: flex; background: #EDEDEB; border-radius: 10px;
+  margin: 0 14px 12px; padding: 3px;
+}
+.tab {
+  flex: 1; text-align: center; padding: 7px 8px;
+  border-radius: 8px; font-size: 12px; font-weight: 600;
+  cursor: pointer; color: var(--GR); background: transparent; border: none;
+  font-family: 'DM Sans', sans-serif;
+}
+.tab.act { background: var(--Y); color: var(--D); }
+
+.otp-row { display: flex; gap: 5px; justify-content: center; padding: 0 14px; }
+.otp-cell {
+  flex: 1; height: 40px; border: 1.5px solid var(--BD);
+  border-radius: 9px; display: flex; align-items: center;
+  justify-content: center; font-size: 17px; font-weight: 800; color: var(--D);
+}
+.otp-cell.act { border-color: var(--G); background: var(--GL); }
+.otp-cell.empty { color: #CCC; }
+
+/* ─── CARDS ─── */
+.card {
+  margin: 0 14px 10px; background: var(--W);
+  border: 1.5px solid var(--BD); border-radius: 14px;
+  overflow: hidden;
+}
+.card.green-tint { background: var(--GL); border-color: #B8DEC9; }
+.card.yellow-tint { background: #FFFBEA; border-color: #F5E08A; }
+.card.dark-tint { background: #F0F0F0; border-color: #D0D0D0; }
+.card.red-tint { background: #FEEBEB; border-color: #F5B8B8; }
+.card-inner { padding: 12px 13px; }
+.card-title { font-size: 10px; font-weight: 700; color: var(--GR); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+.row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.row:last-child { margin-bottom: 0; }
+.row-ico { font-size: 14px; width: 22px; text-align: center; flex-shrink: 0; }
+.row-txt h4 { font-size: 11px; font-weight: 600; color: var(--D); line-height: 1.2; }
+.row-txt p { font-size: 10px; color: var(--GR); }
+
+.stat-grid { display: flex; gap: 8px; margin: 0 14px 10px; }
+.stat {
+  flex: 1; background: var(--W); border: 1.5px solid var(--BD);
+  border-radius: 12px; padding: 10px 8px; text-align: center;
+}
+.stat .v { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--D); line-height: 1; }
+.stat .v.green { color: var(--G); }
+.stat .v.yellow { color: var(--YD); }
+.stat .k { font-size: 9px; color: var(--GR); margin-top: 3px; }
+
+/* ─── MAP ─── */
+.map {
+  background: #E8E3D8; position: relative; overflow: hidden;
+  flex-shrink: 0;
+}
+.map-grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(160,150,130,0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(160,150,130,0.2) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+.road { position: absolute; background: #D4CEC0; }
+.road.h { height: 11px; left: 0; right: 0; }
+.road.v { width: 10px; top: 0; bottom: 0; }
+.road.main { background: #C8C1B0; }
+.map-pin {
+  position: absolute; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-size: 13px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.map-lbl {
+  position: absolute; background: var(--W); border-radius: 7px;
+  padding: 3px 7px; font-size: 9px; font-weight: 700; color: var(--D);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+/* ─── NOTIFICATION OVERLAY ─── */
+.notif-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.55);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 12px; z-index: 20;
+}
+.notif-sheet {
+  background: var(--W); border-radius: 18px;
+  padding: 14px; box-shadow: 0 -8px 30px rgba(0,0,0,0.18);
+}
+.notif-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.countdown {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 2.5px solid var(--Y); display: flex; align-items: center;
+  justify-content: center; font-family: 'Syne', sans-serif;
+  font-size: 14px; font-weight: 800; color: var(--YD);
+  flex-shrink: 0;
+}
+.countdown.green { border-color: var(--G); color: var(--G); }
+.notif-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--D); margin: 6px 0 10px; }
+.info-pills { display: flex; gap: 6px; margin: 8px 0 10px; }
+.pill {
+  flex: 1; background: var(--F); border-radius: 9px; padding: 7px 6px;
+  text-align: center; border: 1px solid var(--BD);
+}
+.pill .pv { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; color: var(--D); }
+.pill .pk { font-size: 9px; color: var(--GR); margin-top: 2px; }
+.pill .pv.red { color: var(--R); }
+.pill .pv.green { color: var(--G); }
+.act-row { display: flex; gap: 8px; }
+.act-row .btn-d {
+  flex: 1; padding: 11px; border-radius: 10px;
+  font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
+  border: none; cursor: pointer; background: var(--F); color: var(--D);
+}
+.act-row .btn-a {
+  flex: 2; padding: 11px; border-radius: 10px;
+  font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
+  border: none; cursor: pointer; background: var(--Y); color: var(--D);
+}
+.act-row .btn-a.green { background: var(--G); color: var(--W); }
+.act-row .btn-a.dark { background: var(--D); color: var(--Y); }
+
+/* ─── CHECK ITEM ─── */
+.chk {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 11px; background: var(--W);
+  border: 1.5px solid var(--BD); border-radius: 9px; margin-bottom: 5px;
+}
+.chk-lbl { font-size: 11px; font-weight: 500; color: var(--D); display: flex; align-items: center; gap: 7px; }
+.chk-ico { font-size: 13px; }
+.toggle {
+  width: 32px; height: 18px; border-radius: 9px;
+  background: #DDD; position: relative; flex-shrink: 0;
+}
+.toggle::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 14px; height: 14px; border-radius: 50%; background: white;
+  transition: left 0.2s;
+}
+.toggle.on { background: var(--G); }
+.toggle.on::after { left: calc(100% - 16px); }
+
+/* ─── PROGRESS STEPS ─── */
+.steps { display: flex; gap: 4px; padding: 8px 14px 4px; }
+.step-seg { flex: 1; height: 3.5px; border-radius: 2px; background: var(--BD); }
+.step-seg.done { background: var(--Y); }
+.step-seg.act { background: var(--G); }
+
+/* ─── AVATAR ─── */
+.av {
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-family: 'Syne', sans-serif;
+  font-weight: 800; flex-shrink: 0; line-height: 1;
+}
+.av.sm { width: 32px; height: 32px; font-size: 12px; }
+.av.md { width: 42px; height: 42px; font-size: 15px; }
+.av.lg { width: 58px; height: 58px; font-size: 20px; }
+.av.yellow { background: var(--Y); color: var(--D); }
+.av.dark { background: var(--D); color: var(--Y); }
+.av.green { background: var(--G); color: var(--W); }
+
+/* ─── TRIP LIST ITEM ─── */
+.trip-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-bottom: 1px solid var(--BD);
+}
+.trip-item:last-child { border-bottom: none; }
+.trip-ico {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: var(--GL); display: flex; align-items: center;
+  justify-content: center; font-size: 15px; flex-shrink: 0;
+}
+.trip-ico.yellow { background: #FFFBEA; }
+.trip-ico.red { background: #FEEBEB; }
+.trip-info { flex: 1; }
+.trip-info h4 { font-size: 11px; font-weight: 600; color: var(--D); }
+.trip-info p { font-size: 10px; color: var(--GR); margin-top: 1px; }
+.trip-amt { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--G); }
+.trip-amt.neg { color: var(--GR); }
+
+/* ─── STAR RATING ─── */
+.stars { display: flex; gap: 4px; }
+.star { font-size: 22px; cursor: pointer; }
+
+/* ─── ALERTS / BANNERS ─── */
+.banner {
+  margin: 0 14px 10px; border-radius: 12px;
+  padding: 10px 12px; display: flex; align-items: flex-start; gap: 8px;
+  font-size: 11px; line-height: 1.5; font-weight: 500;
+}
+.banner.warn { background: #FFF8E1; border: 1.5px solid #F5D87A; color: #7A5800; }
+.banner.green { background: var(--GL); border: 1.5px solid #B8DEC9; color: #1A5C36; }
+.banner.red { background: #FEEBEB; border: 1.5px solid #F5B8B8; color: var(--R); }
+.banner.info { background: #E3F2FD; border: 1.5px solid #90CAF9; color: #1565C0; }
+.banner-ico { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* ─── SPECIAL: ONLINE TOPBAR ─── */
+.online-top {
+  background: var(--G); padding: 10px 16px 14px; flex-shrink: 0;
+}
+.online-top .driver-row { display: flex; align-items: center; gap: 10px; }
+.online-top .driver-name { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: white; }
+.online-top .driver-sub { font-size: 10px; color: rgba(255,255,255,0.7); }
+.offline-btn {
+  margin-left: auto; background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.3); color: white;
+  border-radius: 20px; padding: 5px 11px; font-size: 10px;
+  font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif;
+}
+.earn-strip {
+  background: rgba(0,0,0,0.2); margin: 8px 0 0;
+  border-radius: 9px; padding: 7px 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.earn-strip .label { font-size: 10px; color: rgba(255,255,255,0.8); display: flex; align-items: center; gap: 5px; }
+.earn-strip .amount { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; color: white; }
+
+/* ─── ROUTE CARD ─── */
+.route-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--W); border-radius: 18px 18px 0 0;
+  padding: 14px 14px 10px;
+  box-shadow: 0 -6px 20px rgba(0,0,0,0.1);
+}
+.route-stats { display: flex; gap: 10px; margin-bottom: 10px; }
+.rs { flex: 1; text-align: center; }
+.rs .v { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--D); }
+.rs .k { font-size: 9px; color: var(--GR); margin-top: 1px; }
+.rs-div { width: 1px; background: var(--BD); }
+
+/* ─── PROFILE HEADER ─── */
+.profile-head {
+  background: var(--D); padding: 20px 16px 22px;
+  text-align: center; flex-shrink: 0;
+}
+.profile-head .profile-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: white; margin-top: 10px; }
+.profile-head .profile-role { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.profile-stats { display: flex; justify-content: center; gap: 20px; margin-top: 12px; }
+.ps-item { text-align: center; }
+.ps-item .v { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; color: var(--Y); }
+.ps-item .k { font-size: 9px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.ps-divider { width: 1px; background: rgba(255,255,255,0.1); }
+
+.menu-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px; border-bottom: 1px solid var(--BD);
+  cursor: pointer;
+}
+.menu-item:last-child { border-bottom: none; }
+.menu-left { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 500; color: var(--D); }
+.menu-left .ico { font-size: 16px; }
+.menu-arrow { color: var(--GR2); font-size: 14px; }
+.menu-badge { background: var(--G); color: white; border-radius: 5px; padding: 2px 7px; font-size: 9px; font-weight: 700; }
+.menu-badge.warn { background: var(--O); }
+.menu-badge.red { background: var(--R); }
+
+/* ─── EARNINGS HEADER ─── */
+.earn-head { background: var(--D); padding: 14px 16px 18px; flex-shrink: 0; }
+.earn-head h2 { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: white; margin-bottom: 12px; }
+.earn-total-card { background: var(--Y); border-radius: 12px; padding: 12px 16px; }
+.earn-total-card .amount { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: var(--D); }
+.earn-total-card .label { font-size: 10px; color: rgba(0,0,0,0.6); margin-top: 1px; }
+.earn-total-card .change { font-size: 10px; color: var(--G); font-weight: 700; margin-top: 3px; }
+
+.period-tabs { display: flex; gap: 5px; padding: 10px 14px 4px; }
+.pt {
+  padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 600;
+  cursor: pointer; border: 1.5px solid var(--BD); color: var(--GR); background: var(--W);
+}
+.pt.act { background: var(--D); color: var(--W); border-color: var(--D); }
+
+/* ─── RATING SCREEN ─── */
+.rating-head { background: var(--Y); padding: 14px 16px 18px; flex-shrink: 0; }
+.rating-big { text-align: center; }
+.rating-big .big-num { font-family: 'Syne', sans-serif; font-size: 44px; font-weight: 800; color: var(--D); line-height: 1; }
+.rating-big .big-stars { font-size: 20px; color: var(--D); margin: 4px 0; }
+.rating-big .big-sub { font-size: 11px; color: rgba(0,0,0,0.6); }
+.rating-bar-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+.rating-bar-row .num { font-size: 10px; font-weight: 600; color: var(--D); width: 10px; }
+.rating-bar-row .bar { flex: 1; height: 5px; background: #E0E0E0; border-radius: 3px; overflow: hidden; }
+.rating-bar-row .fill { height: 100%; background: var(--Y); border-radius: 3px; }
+.rating-bar-row .pct { font-size: 10px; color: var(--GR); width: 26px; text-align: right; }
+
+/* ─── HISTORY ─── */
+.hist-date { padding: 6px 14px; font-size: 10px; font-weight: 700; color: var(--GR); letter-spacing: 1px; text-transform: uppercase; background: var(--F); }
+
+/* ─── NOTIF LIST ─── */
+.notif-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 14px; border-bottom: 1px solid var(--BD);
+}
+.notif-item.unread { background: #FAFEF5; }
+.notif-item .ni-ico { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.notif-item .ni-ico.g { background: var(--GL); }
+.notif-item .ni-ico.y { background: #FFFBEA; }
+.notif-item .ni-ico.r { background: #FEEBEB; }
+.notif-item .ni-ico.b { background: #E3F2FD; }
+.notif-item .ni-body { flex: 1; }
+.notif-item .ni-body h4 { font-size: 11px; font-weight: 600; color: var(--D); }
+.notif-item .ni-body p { font-size: 10px; color: var(--GR); margin-top: 1px; line-height: 1.4; }
+.notif-item .ni-time { font-size: 9px; color: var(--GR2); white-space: nowrap; }
+.unread-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--G); flex-shrink: 0; margin-top: 5px; }
+
+/* ─── COMPLETE SCREEN ─── */
+.success-center {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 20px 14px; text-align: center;
+}
+.success-ring {
+  width: 70px; height: 70px; border-radius: 50%;
+  background: var(--G); display: flex; align-items: center;
+  justify-content: center; font-size: 30px; margin-bottom: 14px;
+  box-shadow: 0 0 0 10px var(--GL);
+}
+.success-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: var(--D); margin-bottom: 5px; }
+.success-sub { font-size: 11px; color: var(--GR); line-height: 1.5; margin-bottom: 16px; }
+
+.summary-card { width: 100%; background: var(--F); border-radius: 12px; padding: 12px; border: 1.5px solid var(--BD); margin-bottom: 12px; }
+.sum-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
+.sum-row:last-child { margin-bottom: 0; }
+.sum-k { font-size: 10px; color: var(--GR); }
+.sum-v { font-size: 10px; font-weight: 700; color: var(--D); }
+.sum-v.green { color: var(--G); font-family: 'Syne', sans-serif; font-size: 15px; }
+.sum-divider { height: 1px; background: var(--BD); margin: 7px 0; }
+
+/* ─── SETTINGS ─── */
+.settings-section { padding: 8px 14px 4px; font-size: 10px; font-weight: 700; color: var(--GR); letter-spacing: 1.5px; text-transform: uppercase; }
+
+/* ─── SUPPORT/HELP ─── */
+.help-card {
+  margin: 0 14px 8px; background: var(--W); border: 1.5px solid var(--BD);
+  border-radius: 12px; overflow: hidden;
+}
+.help-card-inner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 13px; cursor: pointer;
+}
+.help-card-inner + .help-card-inner { border-top: 1px solid var(--BD); }
+.help-ico-box { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.help-ico-box.green { background: var(--GL); }
+.help-ico-box.yellow { background: #FFFBEA; }
+.help-ico-box.blue { background: #E3F2FD; }
+.help-ico-box.red { background: #FEEBEB; }
+.help-text h4 { font-size: 12px; font-weight: 600; color: var(--D); }
+.help-text p { font-size: 10px; color: var(--GR); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 600px) {
+  .ph { width: 200px; height: 430px; }
+  .pg-head h1 { font-size: 28px; }
+}
+
+/* ─── SPLASH SCREEN ─── */
+.splash {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: var(--D); text-align: center; padding: 20px;
+}
+.splash-logo {
+  width: 72px; height: 72px; background: var(--Y); border-radius: 20px;
+  display: flex; align-items: center; justify-content: center; font-size: 34px;
+  margin-bottom: 16px; box-shadow: 0 8px 24px rgba(245,197,24,0.4);
+}
+.splash h2 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--W); margin-bottom: 4px; }
+.splash p { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 30px; }
+.splash-loader { width: 50px; height: 3px; background: #333; border-radius: 2px; overflow: hidden; }
+.splash-loader::after {
+  content: ''; display: block; height: 100%; width: 40%; background: var(--Y);
+  border-radius: 2px; animation: slide 1.5s ease-in-out infinite;
+}
+@keyframes slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+.forgot-link { text-align: right; padding: 0 14px 10px; font-size: 11px; color: var(--YD); font-weight: 600; cursor: pointer; }
+.terms-txt { text-align: center; font-size: 10px; color: var(--GR); padding: 10px 14px 0; line-height: 1.5; }
+.terms-txt a { color: var(--YD); font-weight: 600; }
+
+.or-divider { display: flex; align-items: center; gap: 10px; padding: 8px 14px; }
+.or-divider .line { flex: 1; height: 1px; background: var(--BD); }
+.or-divider span { font-size: 10px; color: var(--GR2); font-weight: 500; }
+
+/* ─── HEADING INSIDE SCREEN ─── */
+.screen-heading { padding: 12px 14px 4px; }
+.screen-heading h3 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--D); }
+.screen-heading p { font-size: 11px; color: var(--GR); margin-top: 2px; }
+.screen-heading .sub-txt { font-size: 13px; font-weight: 700; color: var(--D); margin-top: 2px; }
+
+/* ─── DARK STAT ─── */
+.dk-stat { background: var(--D3); border-radius: 10px; padding: 9px 7px; text-align: center; flex: 1; }
+.dk-stat .v { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; color: white; }
+.dk-stat .k { font-size: 9px; color: #888; margin-top: 2px; }
+.dk-stat .v.y { color: var(--Y); }
+.dk-stat .stars-row { font-size: 11px; color: var(--Y); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ PAGE HEADER ═══════════════════════════════ -->
+<div class="pg-head">
+  <div class="app-badge">🚗 PIKMYCAR · DRIVER APP</div>
+  <h1>Complete <span>UI Flow</span></h1>
+  <p>Every screen · Support Driver & Main Driver · All states covered</p>
+</div>
+
+<!-- ══════════════════════ SECTION A: AUTH ══════════════════════ -->
+<div class="sec">
+  <div class="sec-num">A</div>
+  <div class="sec-text"><h2>Authentication & Onboarding</h2><p>Splash → Login → OTP → Forgot Password → Reset</p></div>
+  <div class="sec-line"></div>
+</div>
+<div class="grid center">
+
+  <!-- A1: Splash -->
+  <div class="pw">
+    <div class="pl">A1 · Splash Screen</div>
+    <div class="ph">
+      <div class="sc">
+        <div class="splash">
+          <div class="splash-logo">🚗</div>
+          <h2>PikMyCar</h2>
+          <p>Driver Partner Platform</p>
+          <div class="splash-loader"></div>
+          <div style="margin-top:24px; font-size:10px; color:#444;">v2.4.1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A2: Login Mobile -->
+  <div class="pw">
+    <div class="pl">A2 · Mobile Login</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div style="padding:16px 14px 10px; text-align:center;">
+          <div style="width:42px;height:42px;background:var(--Y);border-radius:12px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:20px;">🚗</div>
+          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--D);">Welcome Back</div>
+          <div style="font-size:11px;color:var(--GR);margin-top:2px;">Sign in to your driver account</div>
+        </div>
+        <div class="tab-row">
+          <button class="tab act">📱 Mobile</button>
+          <button class="tab">✉️ Email</button>
+        </div>
+        <div class="form-blk">
+          <span class="form-lbl">Mobile Number</span>
+          <div class="input">
+            <span class="ph-flag">🇦🇪</span>
+            <span class="ph-code">+971</span>
+            <span style="color:#CCC;font-size:12px;">55 327 9516</span>
+          </div>
+        </div>
+        <div class="form-blk">
+          <span class="form-lbl">Password</span>
+          <div class="input" style="justify-content:space-between;">
+            <span>••••••••</span>
+            <span style="font-size:11px;color:var(--YD);font-weight:600;">Show</span>
+          </div>
+        </div>
+        <div class="forgot-link">Forgot Password?</div>
+        <button class="btn yellow">Login →</button>
+        <div class="or-divider"><div class="line"></div><span>or</span><div class="line"></div></div>
+        <button class="btn ghost">🔢 Login with OTP</button>
+        <div class="terms-txt">By continuing you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A3: Email Login -->
+  <div class="pw">
+    <div class="pl">A3 · Email Login</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div style="padding:16px 14px 10px; text-align:center;">
+          <div style="width:42px;height:42px;background:var(--D);border-radius:12px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:20px;">✉️</div>
+          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--D);">Login with Email</div>
+          <div style="font-size:11px;color:var(--GR);margin-top:2px;">Use your registered email address</div>
+        </div>
+        <div class="tab-row">
+          <button class="tab">📱 Mobile</button>
+          <button class="tab act">✉️ Email</button>
+        </div>
+        <div class="form-blk">
+          <span class="form-lbl">Email Address</span>
+          <div class="input focus">
+            <span style="color:var(--D);">driver@pikmycar.ae</span>
+          </div>
+        </div>
+        <div class="form-blk">
+          <span class="form-lbl">Password</span>
+          <div class="input" style="justify-content:space-between;">
+            <span>••••••••</span>
+            <span style="font-size:11px;color:var(--YD);font-weight:600;">Show</span>
+          </div>
+        </div>
+        <div class="forgot-link">Forgot Password?</div>
+        <button class="btn yellow">Login →</button>
+        <div class="banner info" style="margin-top:8px;">
+          <span class="banner-ico">💡</span>
+          <span>Use OTP login for faster, more secure access</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A4: Enter OTP -->
+  <div class="pw">
+    <div class="pl">A4 · Enter OTP</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div style="padding:16px 14px 12px;text-align:center;">
+          <div style="width:42px;height:42px;background:var(--GL);border-radius:12px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:20px;border:1.5px solid #B8DEC9;">🔐</div>
+          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--D);">Enter OTP</div>
+          <div style="font-size:11px;color:var(--GR);margin-top:3px;">Code sent to</div>
+          <div style="font-size:13px;font-weight:700;color:var(--D);margin-top:2px;">+971 55 327 9516</div>
+        </div>
+        <div style="padding:0 14px 6px;font-size:10px;font-weight:700;color:var(--GR);letter-spacing:1px;">MOBILE OTP</div>
+        <div class="otp-row">
+          <div class="otp-cell act">7</div>
+          <div class="otp-cell act">2</div>
+          <div class="otp-cell act">3</div>
+          <div class="otp-cell empty">—</div>
+          <div class="otp-cell empty">—</div>
+          <div class="otp-cell empty">—</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 14px 14px;font-size:11px;">
+          <span style="color:var(--GR);">Resend OTP</span>
+          <span style="color:var(--R);font-weight:700;">00 : 42</span>
+        </div>
+        <button class="btn green">Verify & Continue</button>
+        <div style="padding:10px 14px 0;text-align:center;">
+          <span style="font-size:11px;color:var(--GR);">Also enter Email OTP if prompted</span>
+        </div>
+        <div style="margin-top:8px;padding:0 14px;font-size:10px;font-weight:700;color:var(--GR);letter-spacing:1px;">EMAIL OTP (OPTIONAL)</div>
+        <div class="otp-row" style="margin-top:5px;opacity:0.5;">
+          <div class="otp-cell empty">—</div>
+          <div class="otp-cell empty">—</div>
+          <div class="otp-cell empty">—</div>
+          <div class="otp-cell empty">—</div>
+          <div class="otp-cell empty">—</div>
+          <div class="otp-cell empty">—</div>
+        </div>
+        <div style="text-align:center;padding:10px 14px 0;font-size:11px;color:var(--YD);font-weight:600;cursor:pointer;">📞 Call Support</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A5: Forgot Password -->
+  <div class="pw">
+    <div class="pl">A5 · Forgot Password</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar white">
+          <span class="back-btn" style="color:var(--D);">←</span>
+          <span class="tb-title" style="color:var(--D);">Forgot Password</span>
+          <div style="width:28px;"></div>
+        </div>
+        <div style="padding:20px 14px 16px;text-align:center;">
+          <div style="font-size:40px;margin-bottom:12px;">🔑</div>
+          <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--D);">Reset Your Password</div>
+          <div style="font-size:11px;color:var(--GR);margin-top:5px;line-height:1.5;">Enter your mobile or email to receive a password reset link</div>
+        </div>
+        <div class="form-blk">
+          <span class="form-lbl">Mobile / Email</span>
+          <div class="input focus">
+            <span style="color:var(--D);font-size:12px;">+971 55 327 9516</span>
+          </div>
+        </div>
+        <button class="btn yellow" style="margin-top:6px;">Send Reset Link</button>
+        <div class="banner warn" style="margin-top:10px;">
+          <span class="banner-ico">⚠️</span>
+          <span>Password resets are only available for verified driver accounts</span>
+        </div>
+        <div style="text-align:center;padding:12px 14px 0;font-size:11px;color:var(--GR);">Remember your password? <span style="color:var(--YD);font-weight:600;cursor:pointer;">Sign In</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A6: Reset Password Sent -->
+  <div class="pw">
+    <div class="pl">A6 · Reset Link Sent</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 14px;text-align:center;">
+          <div style="width:70px;height:70px;background:var(--GL);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:16px;border:2px solid #B8DEC9;">✉️</div>
+          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--D);margin-bottom:8px;">Check Your Phone!</div>
+          <div style="font-size:12px;color:var(--GR);line-height:1.6;margin-bottom:20px;">We've sent a reset link to<br><strong style="color:var(--D);">+971 55 327 9516</strong><br>Link expires in 15 minutes</div>
+          <button class="btn green" style="width:100%;margin:0 0 10px;">Open Messages App</button>
+          <button class="btn outline" style="width:100%;margin:0;">Resend Link</button>
+          <div style="margin-top:14px;font-size:11px;color:var(--GR);">Didn't receive? <span style="color:var(--YD);font-weight:600;cursor:pointer;">Contact Support</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════ SECTION B: HOME STATES ══════════════════════ -->
+<div class="sec">
+  <div class="sec-num">B</div>
+  <div class="sec-text"><h2>Home Dashboard — All States</h2><p>Offline · Online Idle · Online Active · Menu Sidebar</p></div>
+  <div class="sec-line"></div>
+</div>
+<div class="grid center">
+
+  <!-- B1: Home Offline -->
+  <div class="pw">
+    <div class="pl">B1 · Home — Offline</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar white">
+          <div style="font-size:18px;cursor:pointer;">☰</div>
+          <div style="display:flex;align-items:center;gap:6px;background:var(--F);border:1.5px solid var(--BD);border-radius:20px;padding:6px 12px;cursor:pointer;">
+            <span style="font-size:13px;">📡</span>
+            <span style="font-size:11px;font-weight:700;color:var(--GR);">Go Online</span>
+          </div>
+          <div class="notif-btn" style="background:var(--F);border:1.5px solid var(--BD);">
+            🔔
+            <div class="bdot" style="border-color:white;"></div>
+          </div>
+        </div>
+        <div class="banner warn" style="margin-top:10px;">
+          <span class="banner-ico">⚠️</span>
+          <span>Turn on availability to receive trip assignments</span>
+        </div>
+        <div class="stat-grid">
+          <div class="stat"><div class="v">20</div><div class="k">Trips This Week</div></div>
+          <div class="stat"><div class="v">4.8⭐</div><div class="k">Rating</div></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 20px;text-align:center;">
+          <div style="font-size:48px;margin-bottom:10px;opacity:0.3;">📵</div>
+          <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--D);margin-bottom:5px;">You're Offline</div>
+          <div style="font-size:11px;color:var(--GR);line-height:1.6;">Turn on "Go Online" to start receiving trip assignments</div>
+          <div style="margin-top:16px;font-size:32px;opacity:0.1;">🏙️🏗️🏢🏛️</div>
+        </div>
+        <div class="bnav">
+          <div class="ni act"><div class="ico">🏠</div><div class="lbl" style="color:var(--YD);">Home</div><div class="dot"></div></div>
+          <div class="ni"><div class="ico">💰</div><div class="lbl">Earnings</div></div>
+          <div class="ni"><div class="ico">⭐</div><div class="lbl">Ratings</div></div>
+          <div class="ni"><div class="ico">🕐</div><div class="lbl">History</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B2: Home Online Waiting -->
+  <div class="pw">
+    <div class="pl">B2 · Home — Online Waiting</div>
+    <div class="ph gr">
+      <div class="sb dark" style="background:var(--G);"><span>9:30</span><div class="sb-icons" style="color:white;">📶🔋</div></div>
+      <div class="sc">
+        <div class="online-top">
+          <div class="driver-row">
+            <div class="av md yellow">AR</div>
+            <div style="margin-left:8px;">
+              <div class="driver-name">Hello, Abdul 👋</div>
+              <div class="driver-sub">🟢 Online · Ready to accept</div>
+            </div>
+            <button class="offline-btn">Go Offline</button>
+          </div>
+          <div class="earn-strip">
+            <span class="label">💵 Today's Earnings</span>
+            <span class="amount">AED 320 ›</span>
+          </div>
+        </div>
+        <div class="stat-grid" style="margin-top:10px;">
+          <div class="stat"><div class="v">8</div><div class="k">Today</div></div>
+          <div class="stat"><div class="v">31</div><div class="k">This Week</div></div>
+          <div class="stat"><div class="v green">4.9⭐</div><div class="k">Rating</div></div>
+        </div>
+        <div class="map" style="flex:1;margin:0 14px;border-radius:14px;overflow:hidden;min-height:140px;position:relative;">
+          <div class="map-grid-bg"></div>
+          <div class="road h" style="top:45%;background:#C8C1B0;height:12px;"></div>
+          <div class="road v" style="left:55%;background:#C8C1B0;width:10px;"></div>
+          <div class="map-pin" style="top:40%;left:50%;width:32px;height:32px;background:var(--Y);transform:translate(-50%,-50%);box-shadow:0 0 0 10px rgba(245,197,24,0.2);">🚗</div>
+          <div class="map-lbl" style="top:10px;left:10px;">You're here</div>
+          <div style="position:absolute;bottom:10px;left:10px;right:10px;background:white;border-radius:10px;padding:8px 10px;font-size:10px;font-weight:700;color:var(--D);">
+            🎯 Searching for trips in 5km radius…
+          </div>
+        </div>
+        <div style="height:8px;"></div>
+        <div class="bnav">
+          <div class="ni act"><div class="ico">🏠</div><div class="lbl" style="color:var(--YD);">Home</div><div class="dot"></div></div>
+          <div class="ni"><div class="ico">💰</div><div class="lbl">Earnings</div></div>
+          <div class="ni"><div class="ico">⭐</div><div class="lbl">Ratings</div></div>
+          <div class="ni"><div class="ico">🕐</div><div class="lbl">History</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B3: Home Online Active Trip -->
+  <div class="pw">
+    <div class="pl">B3 · Home — Active Trip</div>
+    <div class="ph gr">
+      <div class="sb dark" style="background:var(--G);"><span>9:30</span><div class="sb-icons" style="color:white;">📶🔋</div></div>
+      <div class="sc">
+        <div class="online-top">
+          <div class="driver-row">
+            <div class="av md yellow">AR</div>
+            <div style="margin-left:8px;">
+              <div class="driver-name">Abdul Rahman</div>
+              <div class="driver-sub">🟢 Online · AED 1,240 earned</div>
+            </div>
+            <button class="offline-btn">Offline</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;margin:10px 14px 8px;">
+          <div class="dk-stat" style="background:#E8F5EE;border:1.5px solid #B8DEC9;"><div class="v" style="color:var(--D);font-size:16px;">12</div><div class="k" style="color:var(--GR);">Today</div></div>
+          <div class="dk-stat" style="background:#E8F5EE;border:1.5px solid #B8DEC9;"><div class="v" style="color:var(--D);font-size:16px;">45</div><div class="k" style="color:var(--GR);">Week</div></div>
+          <div class="dk-stat" style="background:#E8F5EE;border:1.5px solid #B8DEC9;"><div class="stars-row" style="color:var(--YD);">★4.8</div><div class="k" style="color:var(--GR);">Rating</div></div>
+        </div>
+        <div class="card" style="margin:0 14px 8px;">
+          <div class="card-inner">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-size:12px;font-weight:700;color:var(--D);">Current Trip</span>
+              <span class="tag green-lt">ETA: 3 min</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--D);margin-bottom:7px;">
+              <div style="width:7px;height:7px;border-radius:50%;background:var(--G);flex-shrink:0;"></div>
+              Dubai Marina
+              <span style="color:var(--GR);font-size:10px;">→</span>
+              <div style="width:7px;height:7px;border-radius:50%;background:var(--YD);flex-shrink:0;"></div>
+              <strong>Al Quoz Garage</strong>
+              <span style="margin-left:auto;font-size:10px;color:var(--R);font-weight:700;">00:55</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:10px;color:var(--GR);">👤 Ahmed · BMW M72528</span>
+              <button class="btn yellow sm">Complete</button>
+            </div>
+          </div>
+        </div>
+        <div class="map" style="flex:1;margin:0 14px;border-radius:14px;min-height:100px;position:relative;">
+          <div class="map-grid-bg"></div>
+          <div class="road h" style="top:50%;"></div>
+          <div class="map-pin" style="top:50%;left:50%;width:30px;height:30px;background:var(--G);transform:translate(-50%,-50%);box-shadow:0 0 0 8px rgba(26,122,74,0.2);">🚗</div>
+          <div class="map-lbl" style="top:8px;right:8px;background:var(--G);color:white;">Business Bay</div>
+        </div>
+        <div style="height:8px;"></div>
+        <div class="bnav">
+          <div class="ni act"><div class="ico">🏠</div><div class="lbl" style="color:var(--YD);">Home</div><div class="dot"></div></div>
+          <div class="ni"><div class="ico">💰</div><div class="lbl">Earnings</div></div>
+          <div class="ni"><div class="ico">⭐</div><div class="lbl">Ratings</div></div>
+          <div class="ni"><div class="ico">🕐</div><div class="lbl">History</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B4: Sidebar Menu -->
+  <div class="pw">
+    <div class="pl">B4 · Sidebar Menu</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div style="background:var(--D);padding:16px 14px 18px;flex-shrink:0;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="av lg yellow">AR</div>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:white;">Abdul Rahman</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.6);">Support Driver</div>
+              <div style="margin-top:4px;"><span class="tag green" style="font-size:9px;padding:3px 7px;">✓ VERIFIED</span></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:14px;margin-top:12px;padding-top:12px;border-top:1px solid #333;">
+            <div style="text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--Y);">340</div><div style="font-size:9px;color:#888;">Trips</div></div>
+            <div style="width:1px;background:#333;"></div>
+            <div style="text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--Y);">4.9★</div><div style="font-size:9px;color:#888;">Rating</div></div>
+            <div style="width:1px;background:#333;"></div>
+            <div style="text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--Y);">98%</div><div style="font-size:9px;color:#888;">Accept</div></div>
+          </div>
+        </div>
+        <div class="sc-scroll">
+          <div class="menu-item"><div class="menu-left"><span class="ico">🏠</span>Home Dashboard</div><span class="menu-arrow">›</span></div>
+          <div class="menu-item"><div class="menu-left"><span class="ico">🚗</span>Current Trip</div><span class="tag green-lt" style="font-size:9px;">ACTIVE</span></div>
+          <div class="menu-item"><div class="menu-left"><span class="ico">💰</span>Earnings</div><span class="menu-arrow">›</span></div>
+          <div class="menu-item"><div class="menu-left"><span class="ico">🕐</span>Trip History</div><span class="menu-arrow">›</span></div>
+          <div class="menu-item"><div class="menu-left"><span class="ico">⭐</span>Ratings & Reviews</div><span class="menu-arrow">›</span></div>
+          <div class="menu-item"><div class="menu-left"><span class="ico">🔔</span>Notifications</div><div class="menu-badge red">3</div></div>
+          <div class="menu-item"><div class="menu-left"><span class="ico">👤</span>My Profile</div><span class="menu-arrow">›</span></div>
+          <div class="menu-item"><div class="menu-left"><span class="ico">📄</span>Documents</div><span class="menu-badge">VERIFIED</span></div>
+          <div class="menu-item"><div class="menu-left"><span class="ico">💳</span>Bank Account</div><span class="menu-arrow">›</span></div>
+          <div class="menu-item"><div class="menu-left"><span class="ico">⚙️</span>Settings</div><span class="menu-arrow">›</span></div>
+          <div class="menu-item"><div class="menu-left"><span class="ico">🆘</span>Help & Support</div><span class="menu-arrow">›</span></div>
+          <div class="menu-item"><div class="menu-left" style="color:var(--R);"><span class="ico">🚪</span>Logout</div><span class="menu-arrow" style="color:var(--R);">›</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════ SECTION C: NOTIFICATIONS ══════════════════════ -->
+<div class="sec">
+  <div class="sec-num">C</div>
+  <div class="sec-text"><h2>Support Driver — Pickup Notifications</h2><p>New request (5km/10km/15km radius) · Accept · Decline · Ticket details</p></div>
+  <div class="sec-line"></div>
+</div>
+<div class="grid center">
+
+  <!-- C1: New Pickup - 5km -->
+  <div class="pw">
+    <div class="pl">C1 · New Pickup (5km radius)</div>
+    <div class="ph gr">
+      <div class="sb dark" style="background:var(--G);"><span>9:30</span><div class="sb-icons" style="color:white;">📶🔋</div></div>
+      <div class="sc" style="position:relative;">
+        <div class="online-top" style="padding-bottom:8px;">
+          <div class="driver-row">
+            <div class="av sm yellow">AR</div>
+            <span style="font-size:11px;font-weight:600;color:white;margin-left:6px;">Abdul Rahman · Online</span>
+          </div>
+        </div>
+        <div class="map" style="flex:1;position:relative;min-height:100px;">
+          <div class="map-grid-bg"></div>
+          <div class="road h" style="top:50%;"></div>
+          <div class="road v" style="left:50%;"></div>
+          <div class="map-pin" style="top:50%;left:50%;width:30px;height:30px;background:var(--Y);transform:translate(-50%,-50%);">🚙</div>
+          <div class="map-pin" style="top:30%;left:30%;width:26px;height:26px;background:var(--G);">📍</div>
+          <div style="position:absolute;top:28%;left:50%;transform:translateX(-50%);font-size:9px;font-weight:600;color:var(--G);background:white;border-radius:5px;padding:2px 6px;">3.2 km</div>
+        </div>
+        <div class="notif-overlay" style="padding:10px;">
+          <div class="notif-sheet">
+            <div class="notif-top">
+              <div>
+                <div class="tag yellow">🚗 Pickup Request · 5km Radius</div>
+                <div class="notif-title">New Car Pickup!</div>
+              </div>
+              <div class="countdown">18</div>
+            </div>
+            <div class="row">
+              <div style="width:30px;height:30px;border-radius:8px;background:var(--F);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">📍</div>
+              <div class="row-txt"><h4>Dubai Marina, Tower B</h4><p>Pickup Location</p></div>
+            </div>
+            <div class="row">
+              <div style="width:30px;height:30px;border-radius:8px;background:var(--F);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">🏭</div>
+              <div class="row-txt"><h4>Al Quoz Auto Center</h4><p>Garage Drop</p></div>
+            </div>
+            <div class="info-pills">
+              <div class="pill"><div class="pv">3.2km</div><div class="pk">Distance</div></div>
+              <div class="pill"><div class="pv">~12min</div><div class="pk">ETA</div></div>
+              <div class="pill"><div class="pv red">HIGH</div><div class="pk">Priority</div></div>
+            </div>
+            <div class="act-row">
+              <button class="btn-d">✗ Decline</button>
+              <button class="btn-a">✓ Accept Pickup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C2: Request 10km (expanded) -->
+  <div class="pw">
+    <div class="pl">C2 · Expanded to 10km Radius</div>
+    <div class="ph gr">
+      <div class="sb dark" style="background:var(--G);"><span>9:30</span><div class="sb-icons" style="color:white;">📶🔋</div></div>
+      <div class="sc" style="position:relative;">
+        <div class="online-top" style="padding-bottom:8px;">
+          <div class="driver-row">
+            <div class="av sm yellow">AR</div>
+            <span style="font-size:11px;font-weight:600;color:white;margin-left:6px;">Online · Waiting</span>
+          </div>
+        </div>
+        <div class="map" style="flex:1;position:relative;min-height:100px;">
+          <div class="map-grid-bg"></div>
+          <div class="road h" style="top:50%;"></div>
+          <div class="road v" style="left:50%;"></div>
+          <div class="map-pin" style="top:50%;left:50%;width:30px;height:30px;background:var(--Y);transform:translate(-50%,-50%);">🚙</div>
+          <div class="map-pin" style="top:20%;left:20%;width:26px;height:26px;background:var(--G);">📍</div>
+          <div style="position:absolute;top:28%;left:52%;font-size:9px;font-weight:600;color:var(--O);background:white;border-radius:5px;padding:2px 6px;">8.1 km</div>
+        </div>
+        <div class="notif-overlay" style="padding:10px;">
+          <div class="notif-sheet">
+            <div class="notif-top">
+              <div>
+                <div class="tag orange">🔔 Pickup Request · 10km Radius</div>
+                <div class="notif-title">Expanded Area Request</div>
+              </div>
+              <div class="countdown" style="border-color:var(--O);color:var(--O);">25</div>
+            </div>
+            <div class="banner warn" style="margin:0 0 8px;">
+              <span class="banner-ico">📡</span>
+              <span style="font-size:10px;">No driver accepted in 5km. Request expanded to 10km radius.</span>
+            </div>
+            <div class="row">
+              <div style="width:30px;height:30px;border-radius:8px;background:var(--F);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">📍</div>
+              <div class="row-txt"><h4>Jumeirah Beach Road, Villa 12</h4><p>Pickup · 8.1km away</p></div>
+            </div>
+            <div class="info-pills">
+              <div class="pill"><div class="pv">8.1km</div><div class="pk">Distance</div></div>
+              <div class="pill"><div class="pv">~22min</div><div class="pk">ETA</div></div>
+              <div class="pill"><div class="pv green">MED</div><div class="pk">Priority</div></div>
+            </div>
+            <div class="act-row">
+              <button class="btn-d">✗ Decline</button>
+              <button class="btn-a">✓ Accept</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C3: Ticket Details View -->
+  <div class="pw">
+    <div class="pl">C3 · Ticket Details</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar yellow">
+          <span class="back-btn">←</span>
+          <span class="tb-title">Ticket #PKM-2847</span>
+          <div style="width:28px;"></div>
+        </div>
+        <div class="sc-scroll">
+          <div style="padding:10px 14px 6px;display:flex;justify-content:space-between;align-items:center;">
+            <span class="tag green">✓ Accepted by Pikmycar</span>
+            <span style="font-size:10px;color:var(--GR);">HIGH priority</span>
+          </div>
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-title">CUSTOMER INFO</div>
+              <div class="row"><div class="row-ico">👤</div><div class="row-txt"><h4>Ahmed Al-Rashid</h4><p>+971 50 123 4567</p></div></div>
+              <div class="row"><div class="row-ico">✉️</div><div class="row-txt"><h4>ahmed@example.ae</h4></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-title">PICKUP DETAILS</div>
+              <div class="row"><div class="row-ico">📍</div><div class="row-txt"><h4>Dubai Marina, Tower B</h4><p>Today · 10:30 AM · Ahmed Al-Rashid</p></div></div>
+              <div class="row"><div class="row-ico">🏭</div><div class="row-txt"><h4>Al Quoz Auto Service</h4><p>Preferred delivery: Today by 4:00 PM</p></div></div>
+            </div>
+          </div>
+          <div class="card green-tint">
+            <div class="card-inner">
+              <div class="card-title">CAR DETAILS</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div>
+                  <div style="font-size:13px;font-weight:700;color:var(--D);">BMW 3 Series · Blue</div>
+                  <div style="font-size:10px;color:var(--GR);">2022 · Plate: M72528</div>
+                </div>
+                <div style="background:white;border:2px solid var(--D);border-radius:7px;padding:4px 9px;font-size:11px;font-weight:700;">M72528</div>
+              </div>
+            </div>
+          </div>
+          <div class="card yellow-tint">
+            <div class="card-inner">
+              <div class="card-title">SERVICE OPTIONS</div>
+              <div class="row"><div class="row-ico">🔧</div><div class="row-txt"><h4>Full Service</h4><p>Oil change, filters, inspection</p></div></div>
+              <div class="row"><div class="row-ico">💰</div><div class="row-txt"><h4>Pricing: AED 280</h4><p>Peak-time + High priority</p></div></div>
+            </div>
+          </div>
+          <div style="padding:0 14px 8px;">
+            <div style="font-size:10px;color:var(--GR);">Notes: Please handle with care – premium vehicle</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════ SECTION D: AFTER ACCEPTANCE ══════════════════════ -->
+<div class="sec">
+  <div class="sec-num">D</div>
+  <div class="sec-text"><h2>After Acceptance — Coordination Phase</h2><p>Pick Me sent · Main driver assigned · Navigate to support driver</p></div>
+  <div class="sec-line"></div>
+</div>
+<div class="grid center">
+
+  <!-- D1: Accepted - Pick Me Waiting -->
+  <div class="pw">
+    <div class="pl">D1 · Accepted · Waiting for Main Driver</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar yellow">
+          <span class="back-btn">←</span>
+          <span class="tb-title">Pickup Accepted ✓</span>
+          <div style="width:28px;"></div>
+        </div>
+        <div class="sc-scroll">
+          <div style="padding:8px 14px;"><span class="tag green">✓ Pickup Accepted</span></div>
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-title">TRIP DETAILS</div>
+              <div class="row"><div class="row-ico">👤</div><div class="row-txt"><h4>Ahmed Al-Rashid</h4><p>+971 50 123 4567</p></div></div>
+              <div class="row"><div class="row-ico">📍</div><div class="row-txt"><h4>Dubai Marina, Tower B</h4><p>Pickup · Today 10:30 AM</p></div></div>
+              <div class="row"><div class="row-ico">🏭</div><div class="row-txt"><h4>Al Quoz Auto Service</h4></div></div>
+            </div>
+          </div>
+          <div class="card green-tint">
+            <div class="card-inner">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:26px;">🚘</span>
+                <div><div style="font-size:12px;font-weight:700;color:var(--D);">BMW 3 Series · Blue</div><div style="font-size:10px;color:var(--GR);">M72528 · 2022</div></div>
+                <div style="margin-left:auto;background:white;border:2px solid var(--D);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:700;">M72528</div>
+              </div>
+            </div>
+          </div>
+          <div class="banner warn">
+            <span class="banner-ico">⏳</span>
+            <div><strong>Pick Me request sent!</strong><br>Waiting for a Main Driver to confirm and pick you up from your location</div>
+          </div>
+          <div style="margin:0 14px 10px;display:flex;gap:8px;">
+            <button class="btn ghost sm" style="flex:1;padding:10px;">📞 Call Customer</button>
+            <button class="btn ghost sm" style="flex:1;padding:10px;">💬 Message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- D2: Main Driver Assigned -->
+  <div class="pw">
+    <div class="pl">D2 · Main Driver Assigned</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar yellow">
+          <span class="back-btn">←</span>
+          <span class="tb-title">Driver On Way 🚕</span>
+          <div style="width:28px;"></div>
+        </div>
+        <div class="sc-scroll">
+          <div style="padding:8px 14px;display:flex;gap:6px;align-items:center;">
+            <span class="tag green-lt">🚕 Main Driver Assigned</span>
+          </div>
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-title">MAIN DRIVER DETAILS</div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                <div class="av md dark">KA</div>
+                <div style="flex:1;">
+                  <div style="font-size:13px;font-weight:700;color:var(--D);">Khalid Al-Ameri</div>
+                  <div style="font-size:10px;color:var(--GR);">★ 4.9 · Main Driver · 620 trips</div>
+                  <div style="font-size:10px;color:var(--GR);">2020 Toyota Camry · White</div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:5px;">
+                  <button class="btn green sm" style="padding:5px 10px;font-size:10px;">📞</button>
+                  <button class="btn ghost sm" style="padding:5px 10px;font-size:10px;">💬</button>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div style="margin-top:8px;background:var(--GL);border-radius:9px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;">
+                <div style="font-size:11px;color:var(--G);font-weight:600;">🕐 Arriving in approximately</div>
+                <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--G);">~4 min</div>
+              </div>
+            </div>
+          </div>
+          <div class="map" style="height:140px;margin:0 14px 10px;border-radius:14px;position:relative;">
+            <div class="map-grid-bg"></div>
+            <div class="road h" style="top:55%;"></div>
+            <div class="road v" style="left:55%;"></div>
+            <div class="map-pin" style="top:60%;left:30%;width:28px;height:28px;background:var(--Y);">👤</div>
+            <div class="map-pin" style="top:25%;left:65%;width:28px;height:28px;background:var(--D);">🚕</div>
+            <div style="position:absolute;top:42%;left:48%;font-size:18px;transform:rotate(-30deg);">↙️</div>
+          </div>
+          <button class="btn dark">📍 Track on Map</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- D3: Main Driver Arrived to pick support driver -->
+  <div class="pw">
+    <div class="pl">D3 · Main Driver Arrived</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar yellow">
+          <span class="back-btn">←</span>
+          <span class="tb-title">Driver Arrived! 🎉</span>
+          <div style="width:28px;"></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;text-align:center;">
+          <div style="width:70px;height:70px;border-radius:50%;background:var(--Y);display:flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:14px;box-shadow:0 0 0 10px rgba(245,197,24,0.15);">🚕</div>
+          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--D);margin-bottom:5px;">Main Driver is Here!</div>
+          <div style="font-size:11px;color:var(--GR);margin-bottom:16px;">Khalid Al-Ameri is waiting outside.<br>Please head down to the car.</div>
+          <div class="card" style="width:100%;margin:0 0 10px;text-align:left;">
+            <div class="card-inner">
+              <div class="row"><div class="row-ico">🚗</div><div class="row-txt"><h4>Toyota Camry · White</h4><p>Plate: AB 12345</p></div></div>
+              <div class="row"><div class="row-ico">📍</div><div class="row-txt"><h4>Front entrance, Gate A</h4></div></div>
+            </div>
+          </div>
+          <button class="btn yellow" style="width:100%;margin:0 0 8px;">✓ I'm in the Car</button>
+          <button class="btn ghost" style="width:100%;margin:0;">📞 Call Driver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- D4: Riding to Customer -->
+  <div class="pw">
+    <div class="pl">D4 · En Route to Customer</div>
+    <div class="ph gr">
+      <div class="sb dark" style="background:var(--G);"><span>9:30</span><div class="sb-icons" style="color:white;">📶🔋</div></div>
+      <div class="sc">
+        <div style="background:var(--G);padding:10px 14px 12px;flex-shrink:0;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.7);">STATUS</div>
+              <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:white;">Riding to Customer</div>
+            </div>
+            <span class="tag green" style="background:rgba(255,255,255,0.2);font-size:10px;">🟢 IN VEHICLE</span>
+          </div>
+        </div>
+        <div class="map" style="flex:1;position:relative;">
+          <div class="map-grid-bg"></div>
+          <div class="road h" style="top:40%;height:14px;background:#C0BA9A;"></div>
+          <div class="road v" style="left:55%;width:12px;background:#C0BA9A;"></div>
+          <div class="map-pin" style="top:38%;left:52%;width:32px;height:32px;background:var(--G);transform:translate(-50%,-50%);box-shadow:0 0 0 8px rgba(26,122,74,0.25);">🚕</div>
+          <div class="map-pin" style="top:18%;left:25%;width:26px;height:26px;background:var(--Y);">📍</div>
+          <div class="map-lbl" style="top:8px;right:8px;">Dubai Marina</div>
+          <div class="route-bottom">
+            <div class="route-stats">
+              <div class="rs"><div class="v">6.2</div><div class="k">km left</div></div>
+              <div class="rs-div"></div>
+              <div class="rs"><div class="v" style="color:var(--G);">14</div><div class="k">min ETA</div></div>
+              <div class="rs-div"></div>
+              <div class="rs"><div class="v">78</div><div class="k">km/h</div></div>
+            </div>
+            <div style="background:var(--F);border-radius:10px;padding:8px 10px;margin-bottom:8px;display:flex;align-items:center;gap:7px;font-size:10px;font-weight:600;color:var(--D);">
+              📍 Dubai Marina, Tower B — Customer Location
+            </div>
+            <button class="btn green">📍 Navigate to Customer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════ SECTION E: CAR INSPECTION & PICKUP ══════════════════════ -->
+<div class="sec">
+  <div class="sec-num">E</div>
+  <div class="sec-text"><h2>Car Inspection & Customer Handover</h2><p>Exterior · Interior · Odometer · Photos · Customer signature</p></div>
+  <div class="sec-line"></div>
+</div>
+<div class="grid center">
+
+  <!-- E1: Arrived at Customer -->
+  <div class="pw">
+    <div class="pl">E1 · Arrived at Customer</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar yellow">
+          <span class="back-btn">←</span>
+          <span class="tb-title">Arrived at Pickup</span>
+          <div style="width:28px;"></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;text-align:center;">
+          <div style="width:64px;height:64px;background:var(--GL);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:12px;border:2px solid #B8DEC9;">📍</div>
+          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--D);margin-bottom:5px;">You've Arrived!</div>
+          <div style="font-size:11px;color:var(--GR);margin-bottom:16px;line-height:1.5;">Dubai Marina, Tower B<br>Locate the customer and begin inspection</div>
+          <div class="card" style="width:100%;margin:0 0 10px;text-align:left;">
+            <div class="card-inner">
+              <div class="card-title">CUSTOMER CONTACT</div>
+              <div class="row"><div class="row-ico">👤</div><div class="row-txt"><h4>Ahmed Al-Rashid</h4><p>Contact person on-site</p></div></div>
+              <div class="row"><div class="row-ico">📞</div><div class="row-txt"><h4>+971 50 123 4567</h4></div></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;width:100%;margin-bottom:10px;">
+            <button class="btn ghost sm" style="flex:1;padding:10px;">📞 Call</button>
+            <button class="btn ghost sm" style="flex:1;padding:10px;">💬 SMS</button>
+          </div>
+          <button class="btn green" style="width:100%;margin:0;">🔍 Start Car Inspection</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E2: Inspection - Exterior -->
+  <div class="pw">
+    <div class="pl">E2 · Inspection — Exterior</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar dark" style="background:var(--D);">
+          <span class="back-btn" style="color:white;">←</span>
+          <span class="tb-title" style="color:white;">Car Inspection</span>
+          <span style="font-size:10px;color:#888;">1/3</span>
+        </div>
+        <div class="steps">
+          <div class="step-seg act"></div>
+          <div class="step-seg"></div>
+          <div class="step-seg"></div>
+        </div>
+        <div class="sc-scroll">
+          <div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:var(--GR);letter-spacing:1px;text-transform:uppercase;">Exterior Check</div>
+          <div style="padding:0 14px 8px;">
+            <div class="chk"><div class="chk-lbl"><span class="chk-ico">🔧</span>No pre-existing scratches</div><div class="toggle on"></div></div>
+            <div class="chk"><div class="chk-lbl"><span class="chk-ico">💡</span>All lights functional</div><div class="toggle on"></div></div>
+            <div class="chk"><div class="chk-lbl"><span class="chk-ico">🛞</span>Tyre condition OK</div><div class="toggle on"></div></div>
+            <div class="chk"><div class="chk-lbl"><span class="chk-ico">🪟</span>Windscreen no damage</div><div class="toggle"></div></div>
+            <div class="chk"><div class="chk-lbl"><span class="chk-ico">🚗</span>Body panels intact</div><div class="toggle on"></div></div>
+          </div>
+          <div style="padding:0 14px 8px;font-size:10px;font-weight:700;color:var(--GR);letter-spacing:1px;text-transform:uppercase;">Existing Damage Notes</div>
+          <div style="padding:0 14px 8px;">
+            <div style="background:var(--F);border:1.5px solid var(--BD);border-radius:10px;padding:9px 11px;height:50px;font-size:11px;color:#CCC;">Tap to note any existing damage…</div>
+          </div>
+          <button class="btn yellow" style="margin-bottom:10px;">Next: Interior Check →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E3: Inspection - Interior -->
+  <div class="pw">
+    <div class="pl">E3 · Inspection — Interior</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar dark" style="background:var(--D);">
+          <span class="back-btn" style="color:white;">←</span>
+          <span class="tb-title" style="color:white;">Car Inspection</span>
+          <span style="font-size:10px;color:#888;">2/3</span>
+        </div>
+        <div class="steps">
+          <div class="step-seg done"></div>
+          <div class="step-seg act"></div>
+          <div class="step-seg"></div>
+        </div>
+        <div class="sc-scroll">
+          <div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:var(--GR);letter-spacing:1px;text-transform:uppercase;">Interior Check</div>
+          <div style="padding:0 14px 8px;">
+            <div class="chk"><div class="chk-lbl"><span class="chk-ico">🪑</span>Seats undamaged</div><div class="toggle on"></div></div>
+            <div class="chk"><div class="chk-lbl"><span class="chk-ico">📻</span>Dashboard intact</div><div class="toggle on"></div></div>
+            <div class="chk"><div class="chk-lbl"><span class="chk-ico">🔑</span>Keys received</div><div class="toggle on"></div></div>
+            <div class="chk"><div class="chk-lbl"><span class="chk-ico">🧹</span>No valuables left in car</div><div class="toggle"></div></div>
+          </div>
+          <div style="padding:0 14px 4px;font-size:10px;font-weight:700;color:var(--GR);letter-spacing:1px;text-transform:uppercase;">Odometer Reading</div>
+          <div class="form-blk">
+            <div class="input focus" style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--D);">
+              42,810 km
+            </div>
+          </div>
+          <div style="padding:0 14px 4px;font-size:10px;font-weight:700;color:var(--GR);letter-spacing:1px;text-transform:uppercase;">Fuel Level</div>
+          <div style="margin:0 14px 10px;background:var(--F);border-radius:10px;padding:10px 12px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:10px;font-weight:700;color:var(--GR);">
+              <span>E</span><span>1/4</span><span>1/2</span><span>3/4</span><span>F</span>
+            </div>
+            <div style="height:8px;background:#E0E0E0;border-radius:4px;overflow:hidden;">
+              <div style="height:100%;width:60%;background:linear-gradient(to right, var(--G), #4CAF50);border-radius:4px;"></div>
+            </div>
+            <div style="text-align:center;margin-top:5px;font-size:10px;font-weight:700;color:var(--G);">~60% Full</div>
+          </div>
+          <button class="btn yellow" style="margin-bottom:10px;">Next: Photo Capture →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E4: Photo Capture -->
+  <div class="pw">
+    <div class="pl">E4 · Inspection — Photos</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar dark" style="background:var(--D);">
+          <span class="back-btn" style="color:white;">←</span>
+          <span class="tb-title" style="color:white;">Car Photos</span>
+          <span style="font-size:10px;color:#888;">3/3</span>
+        </div>
+        <div class="steps">
+          <div class="step-seg done"></div>
+          <div class="step-seg done"></div>
+          <div class="step-seg act"></div>
+        </div>
+        <div class="sc-scroll">
+          <div style="padding:8px 14px 6px;font-size:11px;color:var(--GR);">Take all required photos before proceeding</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 14px 10px;">
+            <div style="background:var(--GL);border:1.5px solid #B8DEC9;border-radius:10px;height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;position:relative;">
+              <span style="font-size:20px;">🚗</span>
+              <span style="font-size:9px;font-weight:700;color:var(--G);">Front ✓</span>
+              <div style="position:absolute;top:5px;right:5px;width:14px;height:14px;background:var(--G);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:8px;">✓</div>
+            </div>
+            <div style="background:var(--GL);border:1.5px solid #B8DEC9;border-radius:10px;height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;position:relative;">
+              <span style="font-size:20px;">🔙</span>
+              <span style="font-size:9px;font-weight:700;color:var(--G);">Back ✓</span>
+              <div style="position:absolute;top:5px;right:5px;width:14px;height:14px;background:var(--G);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:8px;">✓</div>
+            </div>
+            <div style="background:var(--GL);border:1.5px solid #B8DEC9;border-radius:10px;height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;position:relative;">
+              <span style="font-size:20px;">👈</span>
+              <span style="font-size:9px;font-weight:700;color:var(--G);">Left ✓</span>
+              <div style="position:absolute;top:5px;right:5px;width:14px;height:14px;background:var(--G);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:8px;">✓</div>
+            </div>
+            <div style="background:var(--F);border:2px dashed var(--BD);border-radius:10px;height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;">
+              <span style="font-size:18px;color:var(--GR);">📷</span>
+              <span style="font-size:9px;color:var(--GR);">Right Side</span>
+            </div>
+            <div style="background:var(--F);border:2px dashed var(--BD);border-radius:10px;height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;">
+              <span style="font-size:18px;color:var(--GR);">📷</span>
+              <span style="font-size:9px;color:var(--GR);">Odometer</span>
+            </div>
+            <div style="background:var(--F);border:2px dashed var(--BD);border-radius:10px;height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;">
+              <span style="font-size:18px;color:var(--GR);">📷</span>
+              <span style="font-size:9px;color:var(--GR);">Interior</span>
+            </div>
+          </div>
+          <div style="padding:0 14px 8px;font-size:11px;color:var(--GR);">3/6 photos taken · Minimum 4 required</div>
+          <button class="btn yellow" style="margin-bottom:8px;" disabled style="opacity:0.5;">Next: Customer Handover →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E5: Customer Signature Handover -->
+  <div class="pw">
+    <div class="pl">E5 · Customer Handover & Signature</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar green">
+          <span class="back-btn" style="color:white;">←</span>
+          <span class="tb-title" style="color:white;">Handover</span>
+          <div style="width:28px;"></div>
+        </div>
+        <div class="sc-scroll">
+          <div class="card" style="margin-top:10px;">
+            <div class="card-inner">
+              <div class="card-title">CUSTOMER CONFIRMATION</div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                <div class="av md yellow">AA</div>
+                <div><div style="font-size:13px;font-weight:700;color:var(--D);">Ahmed Al-Rashid</div><div style="font-size:10px;color:var(--GR);">BMW 3 Series · M72528</div></div>
+              </div>
+              <div class="chk"><div class="chk-lbl">Customer informed of service</div><div class="toggle on"></div></div>
+              <div class="chk"><div class="chk-lbl">Keys received</div><div class="toggle on"></div></div>
+              <div class="chk"><div class="chk-lbl">Inspection completed together</div><div class="toggle on"></div></div>
+              <div class="chk"><div class="chk-lbl">Valuables removed from car</div><div class="toggle"></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-title">CUSTOMER SIGNATURE</div>
+              <div style="height:56px;border:2px dashed var(--BD);border-radius:10px;background:var(--F);display:flex;align-items:center;justify-content:center;margin-bottom:6px;cursor:pointer;">
+                <span style="font-size:11px;color:var(--GR);">✍️ Tap to sign here</span>
+              </div>
+              <div style="font-size:10px;color:var(--GR);">Customer signature confirms handover and inspection agreement</div>
+            </div>
+          </div>
+          <button class="btn green" style="margin-bottom:8px;">✓ Confirm & Start Drive to Garage</button>
+          <div style="padding:0 14px;font-size:10px;color:var(--GR);text-align:center;">By confirming you acknowledge the car condition report</div>
+          <div style="height:10px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════ SECTION F: EN ROUTE TO GARAGE ══════════════════════ -->
+<div class="sec">
+  <div class="sec-num">F</div>
+  <div class="sec-text"><h2>Driving to Garage</h2><p>Navigation · Speed alerts · Arrived at garage · Handover</p></div>
+  <div class="sec-line"></div>
+</div>
+<div class="grid center">
+
+  <!-- F1: En Route to Garage -->
+  <div class="pw">
+    <div class="pl">F1 · En Route to Garage</div>
+    <div class="ph">
+      <div class="sb dark" style="background:var(--G);"><span>9:30</span><div class="sb-icons" style="color:white;">📶🔋</div></div>
+      <div class="sc">
+        <div style="background:var(--G);padding:8px 14px 10px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:10px;color:rgba(255,255,255,0.7);">DRIVING CUSTOMER CAR</div><div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:white;">En Route to Garage</div></div>
+          <span class="tag" style="background:rgba(255,255,255,0.15);color:white;font-size:9px;">🟢 ACTIVE</span>
+        </div>
+        <div class="map" style="flex:1;position:relative;">
+          <div class="map-grid-bg"></div>
+          <div class="road h" style="top:50%;height:14px;background:#C0BA9A;"></div>
+          <div class="road h" style="top:25%;background:#D0CABC;"></div>
+          <div class="road v" style="left:40%;background:#D0CABC;"></div>
+          <div class="map-pin" style="top:50%;left:55%;width:34px;height:34px;background:var(--G);transform:translate(-50%,-50%);box-shadow:0 0 0 10px rgba(26,122,74,0.2);">🚘</div>
+          <div class="map-pin" style="top:22%;left:25%;width:26px;height:26px;background:var(--R);">🏭</div>
+          <div class="map-lbl" style="bottom:100px;left:8px;">Al Quoz Auto</div>
+          <div class="route-bottom">
+            <div class="route-stats">
+              <div class="rs"><div class="v">8.4</div><div class="k">km left</div></div>
+              <div class="rs-div"></div>
+              <div class="rs"><div class="v" style="color:var(--G);">18</div><div class="k">min ETA</div></div>
+              <div class="rs-div"></div>
+              <div class="rs"><div class="v">62</div><div class="k">km/h</div></div>
+            </div>
+            <div style="background:var(--F);border-radius:9px;padding:7px 10px;margin-bottom:8px;font-size:10px;font-weight:600;color:var(--D);">🏭 Al Quoz Auto Service Center</div>
+            <button class="btn green">🚦 Navigate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- F2: Arrived at Garage -->
+  <div class="pw">
+    <div class="pl">F2 · Arrived at Garage</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar dark" style="background:var(--D);">
+          <span class="back-btn" style="color:white;">←</span>
+          <span class="tb-title" style="color:white;">Garage Handover</span>
+          <span style="font-size:10px;color:#888;">Step 3/3</span>
+        </div>
+        <div class="steps">
+          <div class="step-seg done"></div>
+          <div class="step-seg done"></div>
+          <div class="step-seg act"></div>
+        </div>
+        <div class="sc-scroll">
+          <div class="banner green" style="margin-top:10px;">
+            <span class="banner-ico">🏁</span>
+            <div><strong>Arrived at Garage!</strong><br>Al Quoz Auto Service Center<br>Sheikh Zayed Rd, Al Quoz 3</div>
+          </div>
+          <div class="card">
+            <div class="card-inner">
+              <div class="card-title">GARAGE HANDOVER CHECKLIST</div>
+              <div class="chk"><div class="chk-lbl">Car delivered to garage team</div><div class="toggle on"></div></div>
+              <div class="chk"><div class="chk-lbl">Keys handed to technician</div><div class="toggle on"></div></div>
+              <div class="chk"><div class="chk-lbl">Parking location noted</div><div class="toggle on"></div></div>
+              <div class="chk"><div class="chk-lbl">Garage receipt received</div><div class="toggle"></div></div>
+            </div>
+          </div>
+          <div class="form-blk">
+            <span class="form-lbl">Technician Name (Optional)</span>
+            <div class="input"><span style="color:var(--GR);">Enter technician name</span></div>
+          </div>
+          <div class="form-blk">
+            <span class="form-lbl">Additional Notes</span>
+            <div style="background:var(--F);border:1.5px solid var(--BD);border-radius:10px;padding:9px 11px;height:48px;font-size:11px;color:#CCC;">Special instructions…</div>
+          </div>
+          <button class="btn green" style="margin-bottom:8px;">🏁 Close Ride & Submit</button>
+          <div style="height:10px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- F3: Ride Complete -->
+  <div class="pw">
+    <div class="pl">F3 · Ride Completed 🎉</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar green">
+          <span class="back-btn" style="color:white;">←</span>
+          <span class="tb-title" style="color:white;">Ride Summary</span>
+          <span class="tag" style="background:rgba(255,255,255,0.2);color:white;font-size:9px;">DONE ✓</span>
+        </div>
+        <div class="success-center">
+          <div class="success-ring">✅</div>
+          <div class="success-title">Ride Completed!</div>
+          <div class="success-sub">Car delivered to garage.<br>Status: At Garage – Service In Progress</div>
+          <div class="summary-card">
+            <div class="sum-row"><span class="sum-k">Trip #</span><span class="sum-v">#PKM-2847</span></div>
+            <div class="sum-row"><span class="sum-k">Customer</span><span class="sum-v">Ahmed Al-Rashid</span></div>
+            <div class="sum-row"><span class="sum-k">Car</span><span class="sum-v">BMW · M72528</span></div>
+            <div class="sum-row"><span class="sum-k">Distance</span><span class="sum-v">12.4 km</span></div>
+            <div class="sum-row"><span class="sum-k">Duration</span><span class="sum-v">38 mins</span></div>
+            <div class="sum-divider"></div>
+            <div class="sum-row"><span class="sum-k" style="font-weight:700;color:var(--D);">Earnings</span><span class="sum-v green">AED 85</span></div>
+          </div>
+          <div style="font-size:11px;color:var(--GR);margin-bottom:8px;">✅ Status: Now Available for next trip</div>
+          <button class="btn yellow" style="width:100%;margin:0;">Back to Home</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════ SECTION G: MAIN DRIVER ══════════════════════ -->
+<div class="sec">
+  <div class="sec-num">G</div>
+  <div class="sec-text"><h2>Main Driver — Complete Flow</h2><p>Home · Pick Me request · Navigate · Pickup · Drop · Complete</p></div>
+  <div class="sec-line"></div>
+</div>
+<div class="grid center">
+
+  <!-- G1: Main Driver Home Offline -->
+  <div class="pw">
+    <div class="pl">G1 · Main Driver — Offline</div>
+    <div class="ph dk">
+      <div class="sb dark"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar dark" style="background:var(--D2);border-bottom:1px solid #333;">
+          <div style="font-size:18px;cursor:pointer;color:white;">☰</div>
+          <div style="display:flex;align-items:center;gap:6px;background:#333;border:1px solid #444;border-radius:20px;padding:6px 12px;cursor:pointer;">
+            <span style="font-size:12px;color:var(--Y);">📡</span>
+            <span style="font-size:11px;font-weight:700;color:var(--GR2);">Go Online</span>
+          </div>
+          <div style="width:30px;height:30px;background:#2A2A2A;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;border:1px solid #444;">🔔</div>
+        </div>
+        <div style="margin:10px 14px;background:#2A2A2A;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:8px;font-size:11px;color:#AAA;font-weight:500;border:1px solid #3A3A3A;">
+          <span style="font-size:14px;">⚠️</span>
+          <span>Go online to receive "Pick Me" requests from support drivers</span>
+        </div>
+        <div style="display:flex;gap:8px;margin:0 14px 10px;">
+          <div class="dk-stat"><div class="v">32</div><div class="k">Trips Week</div></div>
+          <div class="dk-stat"><div class="v y stars-row">★4.9</div><div class="k">Rating</div></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;text-align:center;">
+          <div style="font-size:50px;margin-bottom:10px;opacity:0.2;">🚕</div>
+          <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:white;margin-bottom:5px;">You're Offline</div>
+          <div style="font-size:11px;color:#666;line-height:1.5;">Toggle "Go Online" to start receiving Pick Me requests</div>
+        </div>
+        <div class="bnav dk">
+          <div class="ni act"><div class="ico">🏠</div><div class="lbl" style="color:var(--Y);">Home</div></div>
+          <div class="ni"><div class="ico" style="color:#666;">💰</div><div class="lbl">Earnings</div></div>
+          <div class="ni"><div class="ico" style="color:#666;">⭐</div><div class="lbl">Ratings</div></div>
+          <div class="ni"><div class="ico" style="color:#666;">🕐</div><div class="lbl">History</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- G2: Main Driver Online -->
+  <div class="pw">
+    <div class="pl">G2 · Main Driver — Online</div>
+    <div class="ph dk">
+      <div class="sb dark"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div style="background:var(--D2);padding:10px 14px 12px;flex-shrink:0;border-bottom:1px solid #333;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <div class="av md dark" style="background:var(--Y);color:var(--D);">MA</div>
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">
+                <span style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:white;">Mohammed Ali</span>
+                <span class="tag dark" style="background:var(--Y);color:var(--D);font-size:9px;">MAIN DRIVER</span>
+              </div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.6);">🟢 Online · Receiving requests</div>
+            </div>
+            <button style="background:#2A2A2A;border:1px solid #444;color:var(--GR2);border-radius:20px;padding:5px 10px;font-size:10px;font-weight:600;cursor:pointer;">Offline</button>
+          </div>
+          <div style="background:rgba(255,255,255,0.06);border-radius:9px;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;border:1px solid #333;">
+            <span style="font-size:10px;color:rgba(255,255,255,0.6);">💵 Today's Earnings</span>
+            <span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--Y);">AED 580 ›</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;margin:10px 14px 8px;">
+          <div class="dk-stat"><div class="v">16</div><div class="k">Today</div></div>
+          <div class="dk-stat"><div class="v">62</div><div class="k">Week</div></div>
+          <div class="dk-stat"><div class="v y stars-row">★4.9</div><div class="k">Rating</div></div>
+        </div>
+        <div style="margin:0 14px 8px;background:#1E2E1E;border:1px solid #2A3E2A;border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;">🎯</span>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:white;">Awaiting Pick Me Requests</div>
+            <div style="font-size:10px;color:#888;margin-top:1px;">Zone coverage active · 3 seats available</div>
+          </div>
+        </div>
+        <div class="map" style="flex:1;margin:0 14px;border-radius:12px;position:relative;overflow:hidden;">
+          <div class="map-grid-bg"></div>
+          <div class="road h" style="top:50%;height:12px;background:#C8C1B0;"></div>
+          <div class="map-pin" style="top:50%;left:50%;width:32px;height:32px;background:var(--D);transform:translate(-50%,-50%);box-shadow:0 0 0 10px rgba(245,197,24,0.15);border:2px solid var(--Y);">🚕</div>
+        </div>
+        <div style="height:8px;"></div>
+        <div class="bnav dk">
+          <div class="ni act"><div class="ico">🏠</div><div class="lbl" style="color:var(--Y);">Home</div></div>
+          <div class="ni"><div class="ico" style="color:#666;">💰</div><div class="lbl">Earnings</div></div>
+          <div class="ni"><div class="ico" style="color:#666;">⭐</div><div class="lbl">Ratings</div></div>
+          <div class="ni"><div class="ico" style="color:#666;">🕐</div><div class="lbl">History</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- G3: Pick Me Notification -->
+  <div class="pw">
+    <div class="pl">G3 · "Pick Me" Request</div>
+    <div class="ph dk">
+      <div class="sb dark"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc" style="position:relative;">
+        <div style="background:var(--D2);padding:8px 14px 10px;flex-shrink:0;border-bottom:1px solid #333;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="av sm" style="background:var(--Y);color:var(--D);">MA</div>
+            <span style="font-size:11px;font-weight:700;color:white;">Mohammed · </span>
+            <span class="tag dark" style="background:var(--Y);color:var(--D);font-size:9px;">MAIN</span>
+          </div>
+        </div>
+        <div class="map" style="flex:1;position:relative;">
+          <div class="map-grid-bg"></div>
+          <div class="road h" style="top:50%;height:12px;background:#C8C1B0;"></div>
+          <div class="road v" style="left:50%;width:10px;background:#C8C1B0;"></div>
+          <div class="map-pin" style="top:55%;left:55%;width:30px;height:30px;background:var(--D);border:2px solid var(--Y);transform:translate(-50%,-50%);">🚕</div>
+          <div class="map-pin" style="top:30%;left:30%;width:26px;height:26px;background:var(--Y);">👷</div>
+        </div>
+        <div class="notif-overlay" style="padding:10px;">
+          <div class="notif-sheet" style="background:var(--D2);border:1px solid #333;">
+            <div class="notif-top">
+              <div>
+                <div class="tag dark" style="background:var(--Y);color:var(--D);">🤙 Pick Me Request</div>
+                <div class="notif-title" style="color:white;">Support Driver Needs a Ride!</div>
+              </div>
+              <div class="countdown green">22</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;background:#2A2A2A;border-radius:10px;padding:9px 11px;margin-bottom:8px;border:1px solid #3A3A3A;">
+              <div class="av sm yellow">AR</div>
+              <div>
+                <div style="font-size:11px;font-weight:700;color:white;">Abdul Rahman</div>
+                <div style="font-size:10px;color:#888;">Support Driver · ★ 4.8</div>
+              </div>
+            </div>
+            <div class="row" style="background:#2A2A2A;border-radius:8px;padding:8px 10px;margin-bottom:5px;">
+              <div style="width:26px;height:26px;border-radius:7px;background:#333;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;">📍</div>
+              <div class="row-txt"><h4 style="color:white;">JBR, Tower B · 1.8km</h4><p style="color:#888;">Driver pickup point</p></div>
+            </div>
+            <div class="row" style="background:#2A2A2A;border-radius:8px;padding:8px 10px;margin-bottom:8px;">
+              <div style="width:26px;height:26px;border-radius:7px;background:#333;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;">🎯</div>
+              <div class="row-txt"><h4 style="color:white;">Dubai Marina · Drop</h4><p style="color:#888;">Customer location</p></div>
+            </div>
+            <div class="info-pills">
+              <div class="pill" style="background:#2A2A2A;border-color:#3A3A3A;"><div class="pv" style="color:white;">1.8km</div><div class="pk">Distance</div></div>
+              <div class="pill" style="background:#2A2A2A;border-color:#3A3A3A;"><div class="pv" style="color:white;">~6min</div><div class="pk">ETA</div></div>
+              <div class="pill" style="background:#2A2A2A;border-color:#3A3A3A;"><div class="pv green">1 seat</div><div class="pk">Required</div></div>
+            </div>
+            <div class="act-row">
+              <button class="btn-d" style="background:#333;color:#AAA;">Decline</button>
+              <button class="btn-a dark">✓ Accept Request</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- G4: Navigating to Support Driver -->
+  <div class="pw">
+    <div class="pl">G4 · Navigating to Support Driver</div>
+    <div class="ph dk">
+      <div class="sb dark"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div style="background:#1E1E1E;padding:8px 14px 10px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333;">
+          <div><div style="font-size:10px;color:#888;">PICK ME REQUEST</div><div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:white;">En Route to Support Driver</div></div>
+          <span class="tag" style="background:rgba(245,197,24,0.15);color:var(--Y);font-size:9px;">ACTIVE 🟡</span>
+        </div>
+        <div class="map" style="flex:1;position:relative;background:#2A2820;">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:18px 18px;"></div>
+          <div class="road h" style="top:50%;height:12px;background:#3A3830;"></div>
+          <div class="road v" style="left:50%;width:10px;background:#3A3830;"></div>
+          <div class="map-pin" style="top:60%;left:60%;width:32px;height:32px;background:var(--D);border:2px solid var(--Y);transform:translate(-50%,-50%);box-shadow:0 0 0 8px rgba(245,197,24,0.15);">🚕</div>
+          <div class="map-pin" style="top:25%;left:30%;width:28px;height:28px;background:var(--Y);">👷</div>
+          <div style="position:absolute;bottom:0;left:0;right:0;background:var(--D2);border-radius:18px 18px 0 0;padding:12px;border-top:1px solid #333;">
+            <div style="display:flex;gap:10px;margin-bottom:9px;">
+              <div style="flex:1;text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:white;">2.1</div><div style="font-size:9px;color:#888;">km left</div></div>
+              <div style="width:1px;background:#333;"></div>
+              <div style="flex:1;text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--Y);">6</div><div style="font-size:9px;color:#888;">min ETA</div></div>
+              <div style="width:1px;background:#333;"></div>
+              <div style="flex:1;text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:white;">58</div><div style="font-size:9px;color:#888;">km/h</div></div>
+            </div>
+            <div style="background:#2A2A2A;border-radius:9px;padding:7px 10px;margin-bottom:8px;font-size:10px;font-weight:600;color:white;border:1px solid #333;">👷 Abdul Rahman · JBR, Tower B</div>
+            <button class="btn yellow">🧭 Navigate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- G5: Support Driver Picked Up -->
+  <div class="pw">
+    <div class="pl">G5 · Support Driver Picked Up</div>
+    <div class="ph dk">
+      <div class="sb dark"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div style="background:#1E1E1E;padding:8px 14px 10px;flex-shrink:0;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333;">
+          <div><div style="font-size:10px;color:#888;">TRANSPORTING</div><div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:white;">To Customer Location</div></div>
+          <span class="tag" style="background:rgba(26,122,74,0.3);color:#5EEA90;font-size:9px;">🟢 IN TRIP</span>
+        </div>
+        <div style="margin:10px 14px 8px;background:#2A2A2A;border-radius:12px;padding:11px 12px;border:1px solid #3A3A3A;display:flex;align-items:center;gap:10px;">
+          <div class="av sm yellow">AR</div>
+          <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:white;">Abdul Rahman</div><div style="font-size:10px;color:#888;">In your vehicle · Support Driver</div></div>
+          <button style="background:#333;border:1px solid #444;color:#AAA;border-radius:8px;padding:5px 9px;font-size:10px;font-weight:600;cursor:pointer;">📞</button>
+        </div>
+        <div class="map" style="flex:1;position:relative;background:#2A2820;">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:18px 18px;"></div>
+          <div class="road h" style="top:45%;height:12px;background:#3A3830;"></div>
+          <div class="map-pin" style="top:45%;left:55%;width:32px;height:32px;background:var(--D);border:2px solid var(--Y);transform:translate(-50%,-50%);box-shadow:0 0 0 8px rgba(245,197,24,0.15);">🚕</div>
+          <div class="map-pin" style="top:20%;left:25%;width:26px;height:26px;background:var(--G);">📍</div>
+          <div style="position:absolute;bottom:0;left:0;right:0;background:var(--D2);border-radius:18px 18px 0 0;padding:12px;border-top:1px solid #333;">
+            <div style="display:flex;gap:10px;margin-bottom:9px;">
+              <div style="flex:1;text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:white;">5.3</div><div style="font-size:9px;color:#888;">km left</div></div>
+              <div style="width:1px;background:#333;"></div>
+              <div style="flex:1;text-align:center;"><div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:#5EEA90;">12</div><div style="font-size:9px;color:#888;">min ETA</div></div>
+            </div>
+            <div style="background:#2A2A2A;border-radius:9px;padding:7px 10px;margin-bottom:8px;font-size:10px;font-weight:600;color:white;border:1px solid #333;">📍 Dubai Marina, Tower B — Customer</div>
+            <button class="btn yellow">🚦 Navigate to Customer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- G6: Dropped Support Driver - Complete -->
+  <div class="pw">
+    <div class="pl">G6 · Trip Complete — Main Driver</div>
+    <div class="ph dk">
+      <div class="sb dark"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div style="background:#1E1E1E;padding:10px 14px;flex-shrink:0;border-bottom:1px solid #333;">
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:white;">Trip Summary</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;text-align:center;">
+          <div style="width:66px;height:66px;border-radius:50%;background:var(--Y);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:12px;box-shadow:0 0 0 10px rgba(245,197,24,0.1);">✅</div>
+          <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:white;margin-bottom:4px;">Pick Me Completed!</div>
+          <div style="font-size:11px;color:#888;margin-bottom:16px;line-height:1.5;">Support driver dropped at<br>customer location successfully</div>
+          <div style="width:100%;background:#242424;border-radius:12px;padding:12px;border:1px solid #333;margin-bottom:12px;text-align:left;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span style="font-size:10px;color:#888;">Trip</span><span style="font-size:10px;font-weight:700;color:white;">#PKM-2847</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span style="font-size:10px;color:#888;">Support Driver</span><span style="font-size:10px;font-weight:700;color:white;">Abdul Rahman</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:7px;"><span style="font-size:10px;color:#888;">Distance</span><span style="font-size:10px;font-weight:700;color:white;">7.1 km</span></div>
+            <div style="height:1px;background:#333;margin:7px 0;"></div>
+            <div style="display:flex;justify-content:space-between;"><span style="font-size:10px;font-weight:700;color:white;">Earnings</span><span style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--Y);">AED 45</span></div>
+          </div>
+          <button class="btn yellow" style="width:100%;margin:0;">Back to Home</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════ SECTION H: EARNINGS ══════════════════════ -->
+<div class="sec">
+  <div class="sec-num">H</div>
+  <div class="sec-text"><h2>Earnings & Finance</h2><p>Dashboard · Period filter · Payout · Transaction history</p></div>
+  <div class="sec-line"></div>
+</div>
+<div class="grid center">
+
+  <!-- H1: Earnings Dashboard -->
+  <div class="pw">
+    <div class="pl">H1 · Earnings Dashboard</div>
+    <div class="ph">
+      <div class="sb light" style="background:var(--D);color:white;"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="earn-head">
+          <h2>💰 Earnings</h2>
+          <div class="earn-total-card">
+            <div class="amount">AED 1,240</div>
+            <div class="label">Total This Week</div>
+            <div class="change">↑ +18% vs last week</div>
+          </div>
+        </div>
+        <div class="period-tabs">
+          <div class="pt act">Today</div>
+          <div class="pt">Week</div>
+          <div class="pt">Month</div>
+        </div>
+        <div style="display:flex;gap:6px;margin:6px 14px 10px;">
+          <div class="stat" style="border-color:var(--GL);background:var(--GL);"><div class="v green">12</div><div class="k">Trips</div></div>
+          <div class="stat"><div class="v">4.9⭐</div><div class="k">Rating</div></div>
+          <div class="stat"><div class="v green" style="font-size:13px;">AED 320</div><div class="k">Today</div></div>
+        </div>
+        <div class="card">
+          <div class="trip-item">
+            <div class="trip-ico">🚗</div>
+            <div class="trip-info"><h4>BMW M72528</h4><p>Marina → Al Quoz · 38 min</p></div>
+            <div class="trip-amt">+AED 85</div>
+          </div>
+          <div class="trip-item">
+            <div class="trip-ico">🚘</div>
+            <div class="trip-info"><h4>Toyota D12345</h4><p>JBR → Al Barsha · 26 min</p></div>
+            <div class="trip-amt">+AED 70</div>
+          </div>
+          <div class="trip-item">
+            <div class="trip-ico">🚙</div>
+            <div class="trip-info"><h4>Nissan F88800</h4><p>Mirdif → Deira · 44 min</p></div>
+            <div class="trip-amt">+AED 95</div>
+          </div>
+        </div>
+        <div style="margin:0 14px;padding:10px 12px;background:var(--GL);border-radius:12px;display:flex;justify-content:space-between;align-items:center;border:1.5px solid #B8DEC9;">
+          <span style="font-size:12px;font-weight:600;color:var(--G);">💳 Payout Available</span>
+          <button class="btn green sm">Withdraw AED 1,240</button>
+        </div>
+        <div class="bnav">
+          <div class="ni"><div class="ico">🏠</div><div class="lbl">Home</div></div>
+          <div class="ni act"><div class="ico">💰</div><div class="lbl" style="color:var(--YD);">Earnings</div><div class="dot"></div></div>
+          <div class="ni"><div class="ico">⭐</div><div class="lbl">Ratings</div></div>
+          <div class="ni"><div class="ico">🕐</div><div class="lbl">History</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- H2: Trip History -->
+  <div class="pw">
+    <div class="pl">H2 · Trip History</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar white">
+          <span class="back-btn" style="color:var(--D);">←</span>
+          <span class="tb-title" style="color:var(--D);">Trip History</span>
+          <span style="font-size:18px;cursor:pointer;color:var(--D);">⚙️</span>
+        </div>
+        <div class="period-tabs" style="border-bottom:1px solid var(--BD);padding-bottom:8px;">
+          <div class="pt act">All</div>
+          <div class="pt">Completed</div>
+          <div class="pt">Cancelled</div>
+        </div>
+        <div class="sc-scroll">
+          <div class="hist-date">Today, Feb 27</div>
+          <div class="trip-item">
+            <div class="trip-ico">🚗</div>
+            <div class="trip-info"><h4>BMW 3 Series · M72528</h4><p>Dubai Marina → Al Quoz · 9:30 AM</p></div>
+            <div>
+              <div class="trip-amt">+AED 85</div>
+              <div style="font-size:9px;color:var(--G);text-align:right;margin-top:2px;">✓ Done</div>
+            </div>
+          </div>
+          <div class="trip-item">
+            <div class="trip-ico">🚘</div>
+            <div class="trip-info"><h4>Toyota Camry · D12345</h4><p>JBR → Al Barsha · 11:15 AM</p></div>
+            <div>
+              <div class="trip-amt">+AED 70</div>
+              <div style="font-size:9px;color:var(--G);text-align:right;margin-top:2px;">✓ Done</div>
+            </div>
+          </div>
+          <div class="hist-date">Yesterday, Feb 26</div>
+          <div class="trip-item">
+            <div class="trip-ico yellow">🚙</div>
+            <div class="trip-info"><h4>Mercedes C300 · A11222</h4><p>DIFC → Motor City · 2:00 PM</p></div>
+            <div>
+              <div class="trip-amt">+AED 110</div>
+              <div style="font-size:9px;color:var(--G);text-align:right;margin-top:2px;">✓ Done</div>
+            </div>
+          </div>
+          <div class="trip-item">
+            <div class="trip-ico red">🚫</div>
+            <div class="trip-info"><h4>Nissan Patrol · K55500</h4><p>Mirdif → Deira · 4:45 PM</p></div>
+            <div>
+              <div class="trip-amt neg">Cancelled</div>
+            </div>
+          </div>
+          <div class="hist-date">Feb 25</div>
+          <div class="trip-item">
+            <div class="trip-ico">🚗</div>
+            <div class="trip-info"><h4>Honda Accord · X99123</h4><p>Sharjah → Garage Hub · 9:00 AM</p></div>
+            <div>
+              <div class="trip-amt">+AED 130</div>
+              <div style="font-size:9px;color:var(--G);text-align:right;margin-top:2px;">✓ Done</div>
+            </div>
+          </div>
+        </div>
+        <div class="bnav">
+          <div class="ni"><div class="ico">🏠</div><div class="lbl">Home</div></div>
+          <div class="ni"><div class="ico">💰</div><div class="lbl">Earnings</div></div>
+          <div class="ni"><div class="ico">⭐</div><div class="lbl">Ratings</div></div>
+          <div class="ni act"><div class="ico">🕐</div><div class="lbl" style="color:var(--YD);">History</div><div class="dot"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════ SECTION I: RATINGS ══════════════════════ -->
+<div class="sec">
+  <div class="sec-num">I</div>
+  <div class="sec-text"><h2>Ratings & Reviews</h2><p>Overview · Bar chart · Individual reviews · Rate customer</p></div>
+  <div class="sec-line"></div>
+</div>
+<div class="grid center">
+
+  <!-- I1: Ratings Overview -->
+  <div class="pw">
+    <div class="pl">I1 · Ratings Overview</div>
+    <div class="ph">
+      <div class="sb light" style="background:var(--Y);"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="rating-head">
+          <div class="rating-big">
+            <div class="big-num">4.9</div>
+            <div class="big-stars">★★★★★</div>
+            <div class="big-sub">Based on 340 trips</div>
+          </div>
+          <div style="margin-top:10px;">
+            <div class="rating-bar-row"><span class="num">5</span><div class="bar"><div class="fill" style="width:82%;"></div></div><span class="pct">82%</span></div>
+            <div class="rating-bar-row"><span class="num">4</span><div class="bar"><div class="fill" style="width:12%;background:var(--O);"></div></div><span class="pct">12%</span></div>
+            <div class="rating-bar-row"><span class="num">3</span><div class="bar"><div class="fill" style="width:4%;background:#FFC107;"></div></div><span class="pct">4%</span></div>
+            <div class="rating-bar-row"><span class="num">2</span><div class="bar"><div class="fill" style="width:1%;background:var(--R);"></div></div><span class="pct">1%</span></div>
+            <div class="rating-bar-row"><span class="num">1</span><div class="bar"></div><span class="pct">0%</span></div>
+          </div>
+        </div>
+        <div class="sc-scroll">
+          <div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:var(--GR);letter-spacing:1px;text-transform:uppercase;">Recent Reviews</div>
+          <div class="card">
+            <div style="padding:10px 12px;border-bottom:1px solid var(--BD);">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                <div style="font-size:11px;font-weight:700;color:var(--D);">Ahmed A.</div>
+                <div style="font-size:12px;color:var(--Y);">★★★★★</div>
+              </div>
+              <div style="font-size:10px;color:var(--GR);">"Very professional and careful with my car. Highly recommended!"</div>
+            </div>
+            <div style="padding:10px 12px;border-bottom:1px solid var(--BD);">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                <div style="font-size:11px;font-weight:700;color:var(--D);">Fatima K.</div>
+                <div style="font-size:12px;color:var(--Y);">★★★★★</div>
+              </div>
+              <div style="font-size:10px;color:var(--GR);">"On time, polite, great service overall."</div>
+            </div>
+            <div style="padding:10px 12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                <div style="font-size:11px;font-weight:700;color:var(--D);">Omar R.</div>
+                <div style="font-size:12px;color:var(--O);">★★★★☆</div>
+              </div>
+              <div style="font-size:10px;color:var(--GR);">"Good experience, minor delay but communicated well."</div>
+            </div>
+          </div>
+        </div>
+        <div class="bnav">
+          <div class="ni"><div class="ico">🏠</div><div class="lbl">Home</div></div>
+          <div class="ni"><div class="ico">💰</div><div class="lbl">Earnings</div></div>
+          <div class="ni act"><div class="ico">⭐</div><div class="lbl" style="color:var(--YD);">Ratings</div><div class="dot"></div></div>
+          <div class="ni"><div class="ico">🕐</div><div class="lbl">History</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- I2: Rate Customer after trip -->
+  <div class="pw">
+    <div class="pl">I2 · Rate the Customer</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar green">
+          <span style="width:28px;"></span>
+          <span class="tb-title" style="color:white;">Rate Experience</span>
+          <div style="width:28px;"></div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;text-align:center;">
+          <div class="av lg yellow" style="margin-bottom:12px;">AA</div>
+          <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--D);margin-bottom:3px;">How was Ahmed?</div>
+          <div style="font-size:11px;color:var(--GR);margin-bottom:20px;">BMW 3 · Dubai Marina pickup</div>
+          <div class="stars" style="margin-bottom:20px;">
+            <span class="star" style="color:var(--Y);">★</span>
+            <span class="star" style="color:var(--Y);">★</span>
+            <span class="star" style="color:var(--Y);">★</span>
+            <span class="star" style="color:var(--Y);">★</span>
+            <span class="star" style="color:#DDD;">★</span>
+          </div>
+          <div style="width:100%;background:var(--F);border-radius:12px;padding:4px 4px;margin-bottom:14px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+              <div style="background:var(--GL);border-radius:9px;padding:8px;font-size:10px;font-weight:600;color:var(--G);text-align:center;cursor:pointer;border:1.5px solid #B8DEC9;">✓ Car was ready</div>
+              <div style="background:var(--GL);border-radius:9px;padding:8px;font-size:10px;font-weight:600;color:var(--G);text-align:center;cursor:pointer;border:1.5px solid #B8DEC9;">✓ On time</div>
+              <div style="background:var(--F);border-radius:9px;padding:8px;font-size:10px;font-weight:600;color:var(--GR);text-align:center;cursor:pointer;border:1.5px solid var(--BD);">+ Friendly</div>
+              <div style="background:var(--GL);border-radius:9px;padding:8px;font-size:10px;font-weight:600;color:var(--G);text-align:center;cursor:pointer;border:1.5px solid #B8DEC9;">✓ Easy handover</div>
+            </div>
+          </div>
+          <div style="width:100%;background:var(--F);border:1.5px solid var(--BD);border-radius:10px;padding:9px 11px;height:50px;font-size:11px;color:#CCC;margin-bottom:12px;text-align:left;">Add a note (optional)…</div>
+          <button class="btn green" style="width:100%;margin:0;">Submit Rating</button>
+          <div style="margin-top:8px;font-size:11px;color:var(--GR);cursor:pointer;">Skip</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════ SECTION J: NOTIFICATIONS LIST ══════════════════════ -->
+<div class="sec">
+  <div class="sec-num">J</div>
+  <div class="sec-text"><h2>Notifications</h2><p>Unread · Read · All types of system notifications</p></div>
+  <div class="sec-line"></div>
+</div>
+<div class="grid center">
+
+  <div class="pw">
+    <div class="pl">J1 · Notification Center</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar white">
+          <span class="back-btn" style="color:var(--D);">←</span>
+          <span class="tb-title" style="color:var(--D);">Notifications</span>
+          <span style="font-size:11px;color:var(--YD);font-weight:600;cursor:pointer;">Clear all</span>
+        </div>
+        <div class="sc-scroll">
+          <div style="padding:5px 14px;font-size:10px;font-weight:700;color:var(--GR);letter-spacing:1px;text-transform:uppercase;background:var(--F);">New · 3 Unread</div>
+          <div class="notif-item unread">
+            <div class="ni-ico g">🚗</div>
+            <div class="ni-body"><h4>New Pickup Request</h4><p>BMW 3 Series at Dubai Marina · High priority · 3.2km away</p></div>
+            <div><div class="ni-time">2m ago</div><div style="display:flex;justify-content:flex-end;margin-top:4px;"><div class="unread-dot"></div></div></div>
+          </div>
+          <div class="notif-item unread">
+            <div class="ni-ico y">💰</div>
+            <div class="ni-body"><h4>Payout Processed</h4><p>AED 1,240 has been transferred to your bank account</p></div>
+            <div><div class="ni-time">1h ago</div><div style="display:flex;justify-content:flex-end;margin-top:4px;"><div class="unread-dot"></div></div></div>
+          </div>
+          <div class="notif-item unread">
+            <div class="ni-ico b">⭐</div>
+            <div class="ni-body"><h4>New 5-Star Review!</h4><p>Ahmed A. left you a great review on your last trip</p></div>
+            <div><div class="ni-time">2h ago</div><div style="display:flex;justify-content:flex-end;margin-top:4px;"><div class="unread-dot"></div></div></div>
+          </div>
+          <div style="padding:5px 14px;font-size:10px;font-weight:700;color:var(--GR);letter-spacing:1px;text-transform:uppercase;background:var(--F);">Earlier</div>
+          <div class="notif-item">
+            <div class="ni-ico g">✅</div>
+            <div class="ni-body"><h4>Trip Completed</h4><p>You successfully delivered BMW M72528 to Al Quoz garage</p></div>
+            <div class="ni-time">Yesterday</div>
+          </div>
+          <div class="notif-item">
+            <div class="ni-ico r">❌</div>
+            <div class="ni-body"><h4>Pickup Request Expired</h4><p>No response within 30 seconds · Nissan Patrol at Mirdif</p></div>
+            <div class="ni-time">Yesterday</div>
+          </div>
+          <div class="notif-item">
+            <div class="ni-ico b">📊</div>
+            <div class="ni-body"><h4>Weekly Summary</h4><p>32 trips completed · AED 2,680 earned · ★4.9 rating this week</p></div>
+            <div class="ni-time">Mon</div>
+          </div>
+          <div class="notif-item">
+            <div class="ni-ico y">🔔</div>
+            <div class="ni-body"><h4>Profile Verified</h4><p>All your documents have been verified. You're ready to drive!</p></div>
+            <div class="ni-time">Feb 20</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════ SECTION K: PROFILE & SETTINGS ══════════════════════ -->
+<div class="sec">
+  <div class="sec-num">K</div>
+  <div class="sec-text"><h2>Profile, Settings & Support</h2><p>Driver profile · Documents · Settings · Help & Support</p></div>
+  <div class="sec-line"></div>
+</div>
+<div class="grid center">
+
+  <!-- K1: Profile -->
+  <div class="pw">
+    <div class="pl">K1 · Driver Profile</div>
+    <div class="ph">
+      <div class="sb dark" style="background:var(--D);"><span>9:30</span><div class="sb-icons" style="color:white;">📶🔋</div></div>
+      <div class="sc">
+        <div class="profile-head">
+          <div class="av lg yellow" style="margin:0 auto;">AR</div>
+          <div class="profile-name">Abdul Rahman</div>
+          <div class="profile-role">Support Driver · ID: DRV-00128</div>
+          <div style="margin-top:8px;"><span class="tag green" style="font-size:10px;">✓ VERIFIED</span></div>
+          <div class="profile-stats">
+            <div class="ps-item"><div class="v">340</div><div class="k">Trips</div></div>
+            <div class="ps-divider"></div>
+            <div class="ps-item"><div class="v">4.9★</div><div class="k">Rating</div></div>
+            <div class="ps-divider"></div>
+            <div class="ps-item"><div class="v">98%</div><div class="k">Acceptance</div></div>
+          </div>
+        </div>
+        <div class="sc-scroll">
+          <div class="card">
+            <div class="menu-item"><div class="menu-left"><span class="ico">👤</span>Personal Info</div><span class="menu-arrow">›</span></div>
+            <div class="menu-item"><div class="menu-left"><span class="ico">📄</span>My Documents</div><span class="menu-badge">VERIFIED</span></div>
+            <div class="menu-item"><div class="menu-left"><span class="ico">💳</span>Bank Account</div><span class="menu-arrow">›</span></div>
+            <div class="menu-item"><div class="menu-left"><span class="ico">🔐</span>Change Password</div><span class="menu-arrow">›</span></div>
+            <div class="menu-item"><div class="menu-left" style="color:var(--R);"><span class="ico">🚪</span>Logout</div><span class="menu-arrow" style="color:var(--R);">›</span></div>
+          </div>
+        </div>
+        <div class="bnav">
+          <div class="ni"><div class="ico">🏠</div><div class="lbl">Home</div></div>
+          <div class="ni"><div class="ico">💰</div><div class="lbl">Earnings</div></div>
+          <div class="ni"><div class="ico">⭐</div><div class="lbl">Ratings</div></div>
+          <div class="ni"><div class="ico">🕐</div><div class="lbl">History</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- K2: Documents -->
+  <div class="pw">
+    <div class="pl">K2 · Documents Verification</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar white">
+          <span class="back-btn" style="color:var(--D);">←</span>
+          <span class="tb-title" style="color:var(--D);">My Documents</span>
+          <div style="width:28px;"></div>
+        </div>
+        <div class="banner green">
+          <span class="banner-ico">✅</span>
+          <span>All documents verified! You're fully approved to drive.</span>
+        </div>
+        <div class="sc-scroll">
+          <div class="card">
+            <div style="padding:10px 12px;border-bottom:1px solid var(--BD);">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                <div style="font-size:12px;font-weight:700;color:var(--D);">🪪 Emirates ID</div>
+                <span class="tag green" style="font-size:9px;">VERIFIED</span>
+              </div>
+              <div style="font-size:10px;color:var(--GR);">784-1990-1234567-8 · Expires: Jan 2027</div>
+            </div>
+            <div style="padding:10px 12px;border-bottom:1px solid var(--BD);">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                <div style="font-size:12px;font-weight:700;color:var(--D);">🚗 Driving License</div>
+                <span class="tag green" style="font-size:9px;">VERIFIED</span>
+              </div>
+              <div style="font-size:10px;color:var(--GR);">DL-UAE-2019-004455 · Expires: Mar 2028</div>
+            </div>
+            <div style="padding:10px 12px;border-bottom:1px solid var(--BD);">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                <div style="font-size:12px;font-weight:700;color:var(--D);">📋 Driver Contract</div>
+                <span class="tag green" style="font-size:9px;">SIGNED</span>
+              </div>
+              <div style="font-size:10px;color:var(--GR);">Signed: Dec 2023 · Valid</div>
+            </div>
+            <div style="padding:10px 12px;border-bottom:1px solid var(--BD);">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                <div style="font-size:12px;font-weight:700;color:var(--D);">🏥 Medical Cert</div>
+                <span class="tag orange" style="font-size:9px;">DUE SOON</span>
+              </div>
+              <div style="font-size:10px;color:var(--GR);">Renewal due: Apr 15, 2026</div>
+            </div>
+            <div style="padding:10px 12px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                <div style="font-size:12px;font-weight:700;color:var(--D);">🧾 Background Check</div>
+                <span class="tag green" style="font-size:9px;">CLEARED</span>
+              </div>
+              <div style="font-size:10px;color:var(--GR);">Completed: Nov 2023</div>
+            </div>
+          </div>
+          <button class="btn ghost" style="margin-bottom:10px;">+ Upload New Document</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- K3: Settings -->
+  <div class="pw">
+    <div class="pl">K3 · Settings</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar white">
+          <span class="back-btn" style="color:var(--D);">←</span>
+          <span class="tb-title" style="color:var(--D);">Settings</span>
+          <div style="width:28px;"></div>
+        </div>
+        <div class="sc-scroll">
+          <div class="settings-section">Notifications</div>
+          <div class="card">
+            <div class="chk" style="border-radius:0;border:none;border-bottom:1px solid var(--BD);margin:0;">
+              <div class="chk-lbl"><span class="chk-ico">🔔</span>Push Notifications</div><div class="toggle on"></div>
+            </div>
+            <div class="chk" style="border-radius:0;border:none;border-bottom:1px solid var(--BD);margin:0;">
+              <div class="chk-lbl"><span class="chk-ico">📳</span>Vibration on Request</div><div class="toggle on"></div>
+            </div>
+            <div class="chk" style="border-radius:0;border:none;margin:0;">
+              <div class="chk-lbl"><span class="chk-ico">🔊</span>Sound Alerts</div><div class="toggle"></div>
+            </div>
+          </div>
+          <div class="settings-section">Preferences</div>
+          <div class="card">
+            <div style="padding:10px 12px;border-bottom:1px solid var(--BD);display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-size:12px;font-weight:500;color:var(--D);">🌐 Language</div>
+              <span style="font-size:11px;color:var(--GR);">English ›</span>
+            </div>
+            <div style="padding:10px 12px;border-bottom:1px solid var(--BD);display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-size:12px;font-weight:500;color:var(--D);">💱 Currency</div>
+              <span style="font-size:11px;color:var(--GR);">AED ›</span>
+            </div>
+            <div class="chk" style="border-radius:0;border:none;margin:0;">
+              <div class="chk-lbl"><span class="chk-ico">🌙</span>Dark Mode</div><div class="toggle"></div>
+            </div>
+          </div>
+          <div class="settings-section">Privacy & Security</div>
+          <div class="card">
+            <div class="chk" style="border-radius:0;border:none;border-bottom:1px solid var(--BD);margin:0;">
+              <div class="chk-lbl"><span class="chk-ico">📍</span>Location Always On</div><div class="toggle on"></div>
+            </div>
+            <div class="chk" style="border-radius:0;border:none;margin:0;">
+              <div class="chk-lbl"><span class="chk-ico">🔐</span>Biometric Login</div><div class="toggle on"></div>
+            </div>
+          </div>
+          <div style="padding:0 14px 6px;font-size:10px;color:var(--GR);text-align:center;">App Version 2.4.1 · PikMyCar Driver</div>
+          <div style="height:10px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- K4: Help & Support -->
+  <div class="pw">
+    <div class="pl">K4 · Help & Support</div>
+    <div class="ph">
+      <div class="sb light"><span>9:30</span><div class="sb-icons">📶🔋</div></div>
+      <div class="sc">
+        <div class="topbar white">
+          <span class="back-btn" style="color:var(--D);">←</span>
+          <span class="tb-title" style="color:var(--D);">Help & Support</span>
+          <div style="width:28px;"></div>
+        </div>
+        <div class="sc-scroll">
+          <div style="padding:10px 14px 8px;font-size:11px;color:var(--GR);">How can we help you today?</div>
+          <div class="help-card">
+            <div class="help-card-inner">
+              <div class="help-ico-box green">📞</div>
+              <div class="help-text"><h4>Call Support</h4><p>Available 24/7 for urgent issues</p></div>
+              <span style="margin-left:auto;color:var(--GR);font-size:14px;">›</span>
+            </div>
+            <div class="help-card-inner">
+              <div class="help-ico-box yellow">💬</div>
+              <div class="help-text"><h4>Live Chat</h4><p>Chat with a support agent now</p></div>
+              <span style="margin-left:auto;font-size:9px;background:var(--G);color:white;border-radius:5px;padding:2px 5px;font-weight:700;">ONLINE</span>
+            </div>
+            <div class="help-card-inner">
+              <div class="help-ico-box blue">✉️</div>
+              <div class="help-text"><h4>Email Us</h4><p>support@pikmycar.ae</p></div>
+              <span style="margin-left:auto;color:var(--GR);font-size:14px;">›</span>
+            </div>
+          </div>
+          <div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:var(--GR);letter-spacing:1px;text-transform:uppercase;">FAQs</div>
+          <div class="card">
+            <div class="menu-item"><div class="menu-left">How do I accept a ride request?</div><span class="menu-arrow">›</span></div>
+            <div class="menu-item"><div class="menu-left">How is my payment calculated?</div><span class="menu-arrow">›</span></div>
+            <div class="menu-item"><div class="menu-left">What if the customer is not available?</div><span class="menu-arrow">›</span></div>
+            <div class="menu-item"><div class="menu-left">How do I report a vehicle issue?</div><span class="menu-arrow">›</span></div>
+          </div>
+          <div class="help-card">
+            <div class="help-card-inner">
+              <div class="help-ico-box red">🚨</div>
+              <div class="help-text"><h4>Emergency SOS</h4><p>Report an emergency situation</p></div>
+              <span class="menu-arrow" style="color:var(--R);">›</span>
+            </div>
+          </div>
+          <div style="height:10px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<div style="max-width:1500px;margin:70px auto 0;padding:24px;text-align:center;border-top:1.5px solid #D8D3CB;">
+  <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--D);margin-bottom:6px;">🚗 PikMyCar Driver App — Complete UI Screens</div>
+  <div style="font-size:12px;color:var(--GR);line-height:1.8;">
+    <strong>Sections:</strong> A · Auth &amp; Onboarding (6 screens) &nbsp;|&nbsp; B · Home States (4) &nbsp;|&nbsp; C · Notifications (3) &nbsp;|&nbsp; D · Coordination (4) &nbsp;|&nbsp; E · Inspection (5) &nbsp;|&nbsp; F · Garage (3) &nbsp;|&nbsp; G · Main Driver (6) &nbsp;|&nbsp; H · Earnings (2) &nbsp;|&nbsp; I · Ratings (2) &nbsp;|&nbsp; J · Notifications (1) &nbsp;|&nbsp; K · Profile &amp; Settings (4)<br>
+    <strong>Total: 40 screens</strong> across Support Driver &amp; Main Driver flows
+  </div>
+</div>
+
+</body>
+</html>
