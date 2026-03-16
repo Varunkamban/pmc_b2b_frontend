@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const sendOtp = async (mobile) => {
-    if (IS_DEV && mobile.replace(/\s/g, "") === "0000000000") return true;
+    if (IS_DEV && ["0000000000", "7811815553"].includes(mobile.replace(/\s/g, ""))) return true;
     try {
       await axiosClient.post("/auth/send-otp", { mobile });
       return true;
@@ -93,6 +93,16 @@ export const AuthProvider = ({ children }) => {
         name: "Dev User",
         email: "dev@localhost",
         mobile: "0000000000",
+      });
+      return true;
+    }
+    if (IS_DEV && mobile.replace(/\s/g, "") === "7811815553" && otp === "123456") {
+      handleAuthSuccess({
+        accessToken: "dev-access-token",
+        refreshToken: "dev-refresh-token",
+        name: "Dev User",
+        email: "dev@localhost",
+        mobile: "7811815553",
       });
       return true;
     }
